@@ -859,7 +859,7 @@ table.quadro td.pos{background:var(--ok-bg);color:var(--ok);font-weight:bold}
               <tr><td><strong>CH Conversão DA</strong></td><td>Horas da CH contratual do mês convertidas em Disponibilidade Alcançável. Cada 1h convertida corresponde a 3h de DA na escala. Ex.: CH contratual de 100h com 12h semanais convertidas (de 24h) = conversão de 50h; a escala fica com 50h de jornada regular e 150h de DA, e a CH Escala Regular e DA fecha em 100h. Só aparece quando a unidade tem o regime de DA.</td></tr>
               <tr><td><strong>CH Escala DA</strong></td><td>Tempo total de Disponibilidade Alcançável escalado. Ex.: DA das 6h às 12h = 6h nesta coluna.</td></tr>
               <tr><td><strong>CH Escala Regular e DA</strong></td><td>CH Escala Regular + horas abonadas da DA. Ex.: na DA de 6h são abonadas 2h, que entram aqui. Só aparece quando a unidade tem o regime de DA.</td></tr>
-              <tr><td><strong>CH JE</strong></td><td>Horas de Jornada Extraordinária. A coluna fica oculta até ser ativada em <strong>Exibir › Coluna CH JE (Jornada Extraordinária)</strong>. Ao lançar JE, o sistema avisa que a coluna pode ser ativada.</td></tr>
+              <tr><td><strong>CH JE</strong></td><td>Horas de Jornada Extraordinária. A coluna fica oculta até ser ativada em <strong>Exibir</strong>, na lista de colunas do Quadro de Frequência. Ao lançar JE, o sistema avisa que a coluna pode ser ativada.</td></tr>
               <tr><td><strong>CH Escala SA</strong></td><td>Horas de sobreaviso escaladas.</td></tr>
               <tr><td><strong>Saldo</strong></td><td>Ver a fórmula abaixo.</td></tr>
             </tbody>
@@ -886,7 +886,6 @@ table.quadro td.pos{background:var(--ok-bg);color:var(--ok);font-weight:bold}
 <div class="menu" id="menu-exibir" role="group" aria-label="Exibir">
   <label class="marca"><input type="checkbox" id="m-comp"> Colunas de dia compactas</label>
   <label class="marca"><input type="checkbox" id="m-tot"> Todos os totais do dia</label>
-  <label class="marca"><input type="checkbox" id="m-je"> Coluna CH JE (Jornada Extraordinária)</label>
   <div id="m-cols"></div>
 </div>
 <div class="menu" id="menu-print" role="group" aria-label="Opções de impressão">
@@ -1511,8 +1510,8 @@ if (typeof module !== 'undefined') module.exports = Core;
   const OLHO = on => '<svg class="olho-i" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 8s2.4-4.5 6.5-4.5S14.5 8 14.5 8 12.1 12.5 8 12.5 1.5 8 1.5 8z"/>' + (on ? '<circle cx="8" cy="8" r="2"/>' : '<path d="M2.5 2.5l11 11"/>') + '</svg>';
   function menuCols() {
     const el = $('m-cols'); if (!el) return;
-    const disp = QD.filter(q => q[0] !== 'je' && !(((q[0] === 'da' || q[0] === 'cons' || q[0] === 'conv') && !S.temDA) || (q[0] === 'sa' && !S.temSA)));
-    const grupo = (tit, l) => l.length ? '<div class="tit">' + tit + '</div>' + l.map(q => '<label class="marca"><input type="checkbox" data-col="' + q[0] + '"' + (oculta(q[0]) ? '' : ' checked') + '> ' + OLHO(!oculta(q[0])) + h(q[1]) + '</label>').join('') : '';
+    const disp = QD.filter(q => !(((q[0] === 'da' || q[0] === 'cons' || q[0] === 'conv') && !S.temDA) || (q[0] === 'sa' && !S.temSA)));
+    const grupo = (tit, l) => l.length ? '<div class="tit">' + tit + '</div>' + l.map(q => (v => '<label class="marca"><input type="checkbox" data-col="' + q[0] + '"' + (v ? ' checked' : '') + '> ' + OLHO(v) + h(q[0] === 'je' ? 'CH JE (Jornada Extraordinária)' : q[1]) + '</label>')(q[0] === 'je' ? !!S.qJE : !oculta(q[0]))).join('') : '';
     el.innerHTML = grupo('Colunas do Quadro de Frequência', disp.filter(q => QD.indexOf(q) < QOC)) + grupo('Colunas do Quadro de Ocorrências', disp.filter(q => QD.indexOf(q) >= QOC));
   }
   function trocaCol(k, mostrar) {
@@ -1530,7 +1529,7 @@ if (typeof module !== 'undefined') module.exports = Core;
   function desenhaEscala() {
     menuCols();
     $('f-ano').value = S.ano; $('tb-ano').textContent = S.ano; $('b-ant').disabled = S.mes === 1; $('b-prox').disabled = S.mes === 12; $('b-qfreq').setAttribute('aria-pressed', S.qFreq ? 'true' : 'false'); $('b-qocor').setAttribute('aria-pressed', S.qOcor ? 'true' : 'false'); aplicaRegime();
-    $('f-mes').value = S.mes; $('f-pq').checked = !!S.pq;  $('b-cad').setAttribute('aria-pressed', S.cadCols ? 'true' : 'false'); $('b-cad').classList.toggle('on', !!S.cadCols); $('m-comp').checked = !!S.compacto; $('m-tot').checked = !!S.totais; $('m-je').checked = !!S.qJE;
+    $('f-mes').value = S.mes; $('f-pq').checked = !!S.pq;  $('b-cad').setAttribute('aria-pressed', S.cadCols ? 'true' : 'false'); $('b-cad').classList.toggle('on', !!S.cadCols); $('m-comp').checked = !!S.compacto; $('m-tot').checked = !!S.totais;
     const B = document.body.classList;
     B.toggle('pq', !!S.pq); B.toggle('cadcols', !!S.cadCols); B.toggle('compacto', !!S.compacto); B.toggle('painel-on', !!S.painel); B.toggle('totais', !!S.totais);
     $('b-painel').setAttribute('aria-pressed', S.painel ? 'true' : 'false');
@@ -1974,7 +1973,7 @@ if (typeof module !== 'undefined') module.exports = Core;
   $('b-ant').onclick = () => { if (S.mes > 1) mudaMes(S.ano, S.mes - 1); };
   $('b-prox').onclick = () => { if (S.mes < 12) mudaMes(S.ano, S.mes + 1); };
   const pref = (id, campo) => { $(id).onchange = e => { S[campo] = e.target.checked; salvar(); desenhaEscala(); }; };
- $('b-cad').onclick = () => { S.cadCols = !S.cadCols; salvar(); desenhaEscala(); }; pref('m-comp', 'compacto'); pref('m-tot', 'totais'); pref('m-je', 'qJE');
+ $('b-cad').onclick = () => { S.cadCols = !S.cadCols; salvar(); desenhaEscala(); }; pref('m-comp', 'compacto'); pref('m-tot', 'totais');
   $('b-qfreq').onclick = () => { S.qFreq = !S.qFreq; salvar(); desenhaEscala(); };
   $('b-qocor').onclick = () => { S.qOcor = !S.qOcor; salvar(); desenhaEscala(); }; pref('f-pq', 'pq');
   function painel(on) { S.painel = on; salvar(); document.body.classList.toggle('painel-on', on); $('b-painel').setAttribute('aria-pressed', on ? 'true' : 'false'); }
