@@ -809,7 +809,7 @@ table.quadro td.pos{background:var(--ok-bg);color:var(--ok);font-weight:bold}
           <li><strong>Exportar › Planilha Excel com fórmulas — só este mês (.xlsx)</strong> gera a planilha do mês exibido na tela.</li>
           <li><strong>Exportar › Planilha Excel com fórmulas — ano inteiro (.xlsx)</strong> gera a planilha com os 12 meses.</li>
         </ul>
-        <p>A planilha leva os empregados, os feriados e os lançamentos, com os mesmos cálculos do sistema. As fórmulas e a aba Códigos ficam protegidas. A versão da planilha (com ou sem DA e SA) segue os regimes marcados na aba Administração. Use o Chrome ou o Edge atualizados.</p>
+        <p>A planilha leva os empregados, os feriados e os lançamentos, com os mesmos cálculos de horas do sistema. A coluna CH Conversão DA e a lista de inconsistências ficam só no sistema. As fórmulas e a aba Códigos ficam protegidas. A versão da planilha (com ou sem DA e SA) segue os regimes marcados na aba Administração. Use o Chrome ou o Edge atualizados.</p>
         <p>O botão <strong>Imprimir</strong> imprime a escala do mês em A4 paisagem, com totais, legenda e observações. Pela seta ao lado de <strong>Imprimir</strong>, é possível incluir os quadros de frequência e de ocorrências em página própria.</p>
 
         <h4 class="aj-h3" id="backup" tabindex="-1">Backup dos dados</h4>
@@ -835,7 +835,7 @@ table.quadro td.pos{background:var(--ok-bg);color:var(--ok);font-weight:bold}
               <tr><td><span class="aj-amb" aria-hidden="true"><svg class="i" viewBox="0 0 16 16"><path d="M8 2.5 14 13H2z"/><path d="M8 6.5v3M8 11.3v.2"/></svg></span></td><td><strong>Triângulo âmbar: cadastro incompleto.</strong> Falta matrícula SIAPE (o empregado não vai para o arquivo para o MentorH) ou CH semanal (sem quadro de frequência).</td></tr>
               <tr><td><span class="aj-cel" aria-hidden="true">MT22<br><b style="color:#6E6E10">DA6-M1</b></span></td><td>Código DA na segunda linha da célula, em verde-oliva: Disponibilidade Alcançável no mesmo dia da jornada.</td></tr>
               <tr><td><span class="aj-cel" aria-hidden="true">MT22<br><b style="color:#0B6E85">SA12-N1</b></span></td><td>Código SA na segunda linha da célula, em azul: Sobreaviso no mesmo dia da jornada.</td></tr>
-              <tr><td><span class="tag-da">DA</span> <span class="tag-sa">SA</span></td><td>Selo junto da CH e do cargo: empregado no regime de Disponibilidade Alcançável ou de Sobreaviso (informativo).</td></tr>
+              <tr><td><span class="tag-da">DA</span> <span class="tag-sa">SA</span></td><td>Selo junto da CH e do cargo: <strong>DA</strong>, empregado com horas convertidas em Disponibilidade Alcançável; <strong>SA</strong>, empregado no regime de Sobreaviso (informativo).</td></tr>
               <tr><td><span class="aj-sw" aria-hidden="true" style="background:rgba(30,71,136,.16);box-shadow:inset 0 0 0 2px var(--pri)"></span></td><td>Dias selecionados</td></tr>
               <tr><td><span class="aj-sw" aria-hidden="true" style="background:rgba(30,71,136,.08);border-style:dashed;border-color:var(--pri)"></span></td><td>Prévia da cópia ao arrastar um dia preenchido</td></tr>
               <tr><td><span class="aj-sd neg">−</span></td><td>Saldo negativo (abaixo da CH Contratual)</td></tr>
@@ -846,7 +846,7 @@ table.quadro td.pos{background:var(--ok-bg);color:var(--ok);font-weight:bold}
         <p>As cores de cada jornada e de cada afastamento estão na <button class="lnk aj-l" data-ir="codigos">legenda da aba Códigos e legenda</button>.</p>
 
         <h4 class="aj-h3" id="da-sa" tabindex="-1">Disponibilidade Alcançável (DA) e Sobreaviso (SA)</h4>
-        <p>São registrados no mesmo dia da jornada, sozinhos (ex.: <code>SA12-D1</code>) ou junto com a jornada regular (ex.: <code>MT22</code> com <code>SA12-N1</code>). Quando combinados com a jornada, a célula mantém a cor da jornada e o código DA ou SA aparece na segunda linha (roxo para DA, azul para SA).</p>
+        <p>São registrados no mesmo dia da jornada, sozinhos (ex.: <code>SA12-D1</code>) ou junto com a jornada regular (ex.: <code>MT22</code> com <code>SA12-N1</code>). Quando combinados com a jornada, a célula mantém a cor da jornada e o código DA ou SA aparece na segunda linha (verde-oliva para DA, azul para SA).</p>
 
         <h4 class="aj-h3" id="quadro-frequencia" tabindex="-1">Quadro de frequência</h4>
         <div class="aj-tbw">
@@ -855,16 +855,17 @@ table.quadro td.pos{background:var(--ok-bg);color:var(--ok);font-weight:bold}
             <thead><tr><th scope="col" style="width:190px">Coluna</th><th scope="col">O que mostra</th></tr></thead>
             <tbody>
               <tr><td><strong>CH Contratual</strong></td><td>Carga horária contratual do mês.</td></tr>
-              <tr><td><strong>CH Conversão DA</strong></td><td>Horas da CH contratual do mês convertidas em Disponibilidade Alcançável. Cada 1h convertida corresponde a 3h de DA na escala. Ex.: CH contratual de 100h com 12h semanais convertidas (de 24h) = conversão de 50h; a escala fica com 50h de jornada regular e 150h de DA, e a CH Escala Regular e DA fecha em 100h. Só aparece quando a unidade tem o regime de DA.</td></tr>
               <tr><td><strong>CH Escala Regular</strong></td><td>Horas das jornadas regulares do mês.</td></tr>
-              <tr><td><strong>CH JE</strong></td><td>Horas de Jornada Extraordinária. A coluna fica oculta até ser ativada em <strong>Exibir › Coluna CH JE (Jornada Extraordinária)</strong>. Ao lançar JE, o sistema avisa que a coluna pode ser ativada.</td></tr>
+              <tr><td><strong>CH Conversão DA</strong></td><td>Horas da CH contratual do mês convertidas em Disponibilidade Alcançável. Cada 1h convertida corresponde a 3h de DA na escala. Ex.: CH contratual de 100h com 12h semanais convertidas (de 24h) = conversão de 50h; a escala fica com 50h de jornada regular e 150h de DA, e a CH Escala Regular e DA fecha em 100h. Só aparece quando a unidade tem o regime de DA.</td></tr>
               <tr><td><strong>CH Escala DA</strong></td><td>Tempo total de Disponibilidade Alcançável escalado. Ex.: DA das 6h às 12h = 6h nesta coluna.</td></tr>
-              <tr><td><strong>CH Escala SA</strong></td><td>Horas de sobreaviso escaladas.</td></tr>
               <tr><td><strong>CH Escala Regular e DA</strong></td><td>CH Escala Regular + horas abonadas da DA. Ex.: na DA de 6h são abonadas 2h, que entram aqui. Só aparece quando a unidade tem o regime de DA.</td></tr>
+              <tr><td><strong>CH JE</strong></td><td>Horas de Jornada Extraordinária. A coluna fica oculta até ser ativada em <strong>Exibir › Coluna CH JE (Jornada Extraordinária)</strong>. Ao lançar JE, o sistema avisa que a coluna pode ser ativada.</td></tr>
+              <tr><td><strong>CH Escala SA</strong></td><td>Horas de sobreaviso escaladas.</td></tr>
               <tr><td><strong>Saldo</strong></td><td>Ver a fórmula abaixo.</td></tr>
             </tbody>
           </table>
         </div>
+        <p>A ordem das colunas é: CH Contratual, CH Escala Regular, CH Conversão DA, CH Escala DA, CH Escala Regular e DA, CH JE, CH Escala SA e Saldo. Para ocultar uma coluna, passe o mouse no cabeçalho dela e clique no ícone do olho. Para exibir de novo, use o menu <strong>Exibir</strong>, que lista todas as colunas dos quadros de Frequência e de Ocorrências.</p>
         <div class="aj-form">
           <p class="aj-form-t">Fórmula do saldo</p>
           <p class="aj-form-f">Saldo = CH Escala Regular e DA (ou só a CH Escala Regular, sem DA) − CH Contratual</p>
@@ -1447,7 +1448,7 @@ if (typeof module !== 'undefined') module.exports = Core;
   let sel = null, visiveis = [], desfazer = [], refazer = [], area = null, arrastando = false, enchendo = null;
   const mf = () => C.mapaFeriados(S.feriados);
   const gw = $('gridwrap'), G = $('grade'), dg = $('digita');
-  const QD = [['contr', 'CH Contratual', '#8FB1EA'], ['esc', 'CH Escala Regular', '#2E9E48'], ['conv', 'CH Conversão DA', '#E3B27A'], ['da', 'CH Escala DA', '#C77618'], ['cons', 'CH Escala Regular e DA', '#F2701D'], ['saldo', 'Saldo', '#FFFFFF'], ['je', 'CH JE', '#C0CA33'], ['sa', 'CH Escala SA', '#C9A53A'],
+  const QD = [['contr', 'CH Contratual', '#8FB1EA'], ['esc', 'CH Escala Regular', '#2E9E48'], ['conv', 'CH Conversão DA', '#E3B27A'], ['da', 'CH Escala DA', '#C77618'], ['cons', 'CH Escala Regular e DA', '#F2701D'], ['je', 'CH JE', '#C0CA33'], ['sa', 'CH Escala SA', '#C9A53A'], ['saldo', 'Saldo', '#FFFFFF'],
     ['lic', 'LM/LP/L', '#8FB1EA'], ['fe', 'FE', '#E8776E'], ['af', 'AF', '#5DB075'], ['acch', 'AC/CH', '#2E9E48'], ['ft', 'Faltas', '#E57373']];
   const QT = { contr: 'Carga horária contratual do mês', conv: 'Horas da CH contratual do mês convertidas em Disponibilidade Alcançável (cada 1h convertida corresponde a 3h de DA)', esc: 'Horas das jornadas regulares do mês (sem a Jornada Extraordinária)', je: 'Horas de Jornada Extraordinária (não entram na escala regular nem no saldo)',
     da: 'Tempo total de Disponibilidade Alcançável escalado', sa: 'Horas de sobreaviso (não entram no saldo)', cons: 'CH Escala Regular + horas abonadas da DA',
@@ -1478,7 +1479,7 @@ if (typeof module !== 'undefined') module.exports = Core;
     if (!C.CH_TAB[s.ch]) p.push('Sem CH semanal: o quadro de frequência não é calculado');
     return p;
   }
-  const QW = [68, 64, 72, 58, 84, 56, 46, 58, 60, 40, 40, 52, 52];
+  const QW = [68, 64, 72, 58, 84, 46, 58, 56, 60, 40, 40, 52, 52];
   const regOk = k => !(((k === 'da' || k === 'cons' || k === 'conv') && !S.temDA) || (k === 'sa' && !S.temSA) || (k === 'je' && !S.qJE));   // sem DA não há consolidado; CH JE só quando o gestor ativa
   const oculta = k => (S.qOcultas || []).includes(k);
   const qdReg = () => QD.filter(q => regOk(q[0]) && !oculta(q[0]));
@@ -1621,7 +1622,7 @@ if (typeof module !== 'undefined') module.exports = Core;
     const s = visiveis.find(x => x.id === cs.value);
     if (!s) { $('cs-corpo').innerHTML = '<p class="dica" style="margin-top:12px">Nenhum empregado cadastrado.</p>'; return; }
     const cel = e[s.id] || {}, q = C.quadro(s, cel, S.ano, S.mes, F);
-    let t = '<div class="cs-q">' + [['CH Contratual', fmt(q.contr)], ['CH Escala Regular', fmt(q.esc)]].concat(S.temDA ? [['CH Conversão DA', fmt(q.conv)], ['CH Escala DA', fmt(q.da)], ['CH Escala Regular e DA', fmt(q.cons)]] : [], [['Saldo', fmtSaldo(q.saldo)]], S.qJE ? [['CH JE', fmt(q.je)]] : [], S.temSA ? [['CH Escala SA', fmt(q.sa)]] : []).map(x => '<div>' + x[0] + '<b>' + (x[1] || '–') + '</b></div>').join('') + '</div>';
+    let t = '<div class="cs-q">' + [['CH Contratual', fmt(q.contr)], ['CH Escala Regular', fmt(q.esc)]].concat(S.temDA ? [['CH Conversão DA', fmt(q.conv)], ['CH Escala DA', fmt(q.da)], ['CH Escala Regular e DA', fmt(q.cons)]] : [], S.qJE ? [['CH JE', fmt(q.je)]] : [], S.temSA ? [['CH Escala SA', fmt(q.sa)]] : [], [['Saldo', fmtSaldo(q.saldo)]]).map(x => '<div>' + x[0] + '<b>' + (x[1] || '–') + '</b></div>').join('') + '</div>';
     info.forEach(i => {
       const c = cel[i.d];
       t += '<div class="cs-dia ' + i.cls + '"><span class="d">' + i.d + '</span><span class="w">' + C.DIAS[i.w] + '</span>'
