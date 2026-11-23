@@ -7,14 +7,14 @@ Ferramenta para elaborar, conferir e exportar a **escala mensal de trabalho** da
 É um arquivo único, que roda direto no navegador. Não precisa de instalação nem de internet, e os dados ficam salvos no próprio navegador (localStorage).
 
 - **Escala:** a grade mensal tem lançamento por clique ou digitação, sugestões de jornadas e afastamentos, combinação de jornada com afastamento (`MT22 AT`, `D12+FE`), copiar/colar e desfazer/refazer.
-- **Quadro de carga horária:** CH Contratual, CH Contratual Presencial e CH Contratual DA (quando há DA), CH Escala Regular, CH JE (opcional), CH Escala DA, CH Escala SA, CH Escala Regular, DA e SA e Saldo.
+- **Quadro de carga horária:** CH Contratual, CH Conversão DA (quando há DA), CH Escala Regular, CH JE (opcional), CH Escala DA, CH Escala SA, CH Escala Regular, DA e SA e Saldo.
 - **Inconsistências:** o sistema aponta
   - 7 ou mais dias consecutivos de trabalho, contando o mês anterior;
   - Sobreaviso acima de 24h por semana (domingo a sábado);
   - mês sem DSR;
   - Dispensa sem jornada ou em dia que não é feriado nem ponto facultativo;
   - mês com férias em que a escala não fecha a CH contratual (na 12x36, tolera até 12h de diferença).
-  - Disponibilidade Alcançável fora da conversão contratual: CH convertida acima de 50%, DA escalada diferente da DA contratual, presencial + DA/3 acima da CH contratual e DA em dia com jornada regular.
+  - Disponibilidade Alcançável fora da conversão contratual: CH convertida acima de 50%, DA escalada diferente de 3 vezes a conversão do mês, presencial + DA/3 acima da CH contratual e DA em dia com jornada regular.
 - **Administração:** cadastro de empregados com matrícula, cargo, especialidade, CH, vínculo, CH semanal convertida em DA (até 50%, 1h = 3h de DA) e indicação de regime de SA.
 - **Feriados:** feriados e pontos facultativos por lotação.
 - **Códigos e legenda:** jornadas do POP.DGP.042, Sobreaviso (POP.DGP.039), Disponibilidade Alcançável (POP.DGP.108) e afastamentos padronizados conforme o MentorH.
