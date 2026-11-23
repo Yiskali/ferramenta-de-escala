@@ -1,74 +1,61 @@
 # Escala Mensal de Trabalho — HU Brasil
 
-Ferramenta para elaborar, conferir e exportar a **escala mensal de trabalho** das equipes do HU Brasil. Há duas versões que seguem as mesmas regras: um sistema em HTML que funciona offline e planilhas Excel alternativas.
+Ferramenta para montar, conferir e exportar a escala mensal de trabalho da sua equipe. Ela confere as regras enquanto você lança e mostra o saldo de horas de cada empregado na hora.
 
-## Sistema HTML (`index.html`)
+## Como baixar e abrir
 
-É um arquivo único, que roda direto no navegador. Não precisa de instalação nem de internet, e os dados ficam salvos no próprio navegador (localStorage).
+1. Clique no arquivo **`index.html`**, na lista de arquivos acima.
+2. Clique no botão de download (**Download raw file**), no canto direito.
+3. Salve o arquivo numa pasta do seu computador.
+4. Dê dois cliques no arquivo. Ele abre no navegador (**Chrome** ou **Edge**).
 
-- **Escala:** a grade mensal tem lançamento por clique ou digitação, sugestões de jornadas e afastamentos, combinação de jornada com afastamento (`MT22 AT`, `D12+FE`), copiar/colar e desfazer/refazer.
-- **Quadro de carga horária:** CH Contratual, CH Conversão DA (quando há DA), CH Escala Regular, CH JE (opcional), CH Escala DA, CH Escala SA, CH Escala Regular, DA e SA e Saldo.
-- **Inconsistências:** o sistema aponta
-  - 7 ou mais dias consecutivos de trabalho, contando o mês anterior;
-  - Sobreaviso acima de 24h por semana (domingo a sábado);
-  - mês sem DSR;
-  - Dispensa sem jornada ou em dia que não é feriado nem ponto facultativo;
-  - mês com férias em que a escala não fecha a CH contratual (na 12x36, tolera até 12h de diferença).
-  - Disponibilidade Alcançável fora da conversão contratual: CH convertida acima de 50%, DA escalada diferente de 3 vezes a conversão do mês, presencial + DA/3 acima da CH contratual e DA em dia com jornada regular.
-- **Administração:** cadastro de empregados com matrícula, cargo, especialidade, CH, vínculo, CH semanal convertida em DA (até 50%, 1h = 3h de DA) e indicação de regime de SA.
-- **Feriados:** feriados e pontos facultativos por lotação.
-- **Códigos e legenda:** jornadas do POP.DGP.042, Sobreaviso (POP.DGP.039), Disponibilidade Alcançável (POP.DGP.108) e afastamentos padronizados conforme o MentorH.
-- **Exportação:**
-  - Excel com fórmulas, do ano inteiro ou de um mês só;
-  - arquivo TXT de importação para o MentorH;
-  - impressão em A4 paisagem.
-- **Backup:** exportação e restauração dos dados em arquivo.
-- **Ajuda:** guia de uso com as regras de JE, SA, DA e Dispensa.
+Não precisa instalar nada nem estar conectado à internet.
 
-## Planilhas Excel alternativas
+## Passo a passo
 
-Têm o mesmo layout do sistema, com fórmulas protegidas, formatação condicional por código e legenda. Existem em 4 variantes:
+1. **Administração:** informe a lotação e cadastre os empregados, com matrícula, cargo, CH semanal e, se houver, as horas convertidas em Disponibilidade Alcançável (DA). Dá para colar a lista direto do Excel.
+2. **Feriados:** clique em **Carregar nacionais** e inclua os feriados locais e os pontos facultativos.
+3. **Escala:** escolha o mês, clique no dia e escolha a sigla no painel à direita, ou digite direto na célula (ex.: `MT22`, `D12 AT`).
+4. **Conferir:** veja o **Saldo** de cada empregado e clique em **Inconsistências** para ver o que está fora das regras.
+5. **Exportar:** gere a planilha Excel (do mês ou do ano) ou o arquivo de importação do MentorH.
 
-| Variante | Conteúdo |
+## O que o sistema confere
+
+- 7 ou mais dias seguidos de trabalho, contando o fim do mês anterior.
+- Semana inteira, de domingo a sábado, sem descanso.
+- Sobreaviso acima de 24 horas na semana.
+- Mês sem DSR.
+- Dispensa (DISP) sem jornada ou em dia que não é feriado nem ponto facultativo.
+- Mês de férias em que a escala não fecha a CH contratual (na escala 12x36, aceita até 12h de diferença).
+- Disponibilidade Alcançável fora da conversão: horas convertidas acima de 50% da CH, DA diferente de 3 vezes a conversão, ou DA em dia com jornada.
+
+## Quadro de horas
+
+| Coluna | O que mostra |
 |---|---|
-| 1_Regular | Escala regular |
-| 2_Regular_DA_SA | Regular + Disponibilidade Alcançável + Sobreaviso |
-| 3_Regular_DA | Regular + Disponibilidade Alcançável |
-| 4_Regular_SA | Regular + Sobreaviso |
+| CH Contratual | Horas que o empregado deve cumprir no mês, já descontados os feriados |
+| CH Escala Regular | Horas das jornadas lançadas |
+| CH Conversão DA | Horas da CH contratual convertidas em DA (cada 1h convertida = 3h de DA) |
+| CH Escala DA | Tempo de DA lançado |
+| CH Escala Regular e DA | Escala regular + 1/3 da DA |
+| CH JE | Jornada Extraordinária (não entra no saldo) |
+| CH Escala SA | Sobreaviso (não entra no saldo) |
+| Saldo | Negativo: faltam horas na escala. Positivo: há horas a mais |
 
-Cada variante tem a versão de **2027** (ano inteiro) e a de **Dezembro/2026**.
+Exemplo: CH contratual de 100h com conversão de 50h → 50h de escala regular + 150h de DA = 100h, saldo 0.
 
-## Paleta de cores
+Qualquer coluna pode ser ocultada pelo ícone do olho no cabeçalho e exibida de novo pelo menu **Exibir**.
 
-- **Jornadas:** tons derivados da identidade visual HU Brasil.
-- **Afastamentos:** cada código tem uma cor única, e famílias parecidas usam tons próximos (por exemplo, MP e 2MP).
+## Atenção: faça backup
 
-## Estrutura do projeto
+Os dados ficam salvos **só no navegador do computador** onde a escala foi feita. Em outro computador ou navegador, a escala aparece vazia, e limpar os dados de navegação apaga tudo.
 
-| Caminho | Função |
-|---|---|
-| `app/core.js` | Regras de negócio: interpretação de códigos, cálculo de horas, inconsistências e cores |
-| `app/data_v7.json` | Jornadas, afastamentos, cargos e paleta |
-| `app/template_v11.html` | Interface |
-| `app/build_v13.py` | Gera o HTML final (arquivo único) |
-| `scripts/build_alt.py` | Gera as planilhas alternativas (xlsxwriter) |
-| `scripts/pack_tpl.py` | Empacota o modelo de planilha que o HTML usa na exportação |
+- Ao terminar, clique em **Backup › Salvar backup** e guarde o arquivo na pasta do setor.
+- Para continuar em outro computador, clique em **Backup › Restaurar backup** e escolha esse arquivo.
 
-```bash
-# Planilhas
-python3 scripts/build_alt.py SAIDA.xlsx REG_DA_SA            # 2027
-python3 scripts/build_alt.py SAIDA.xlsx REG --ano 2026 --so-dez
+## Dúvidas
 
-# HTML
-python3 scripts/pack_tpl.py
-python3 app/build_v13.py
-```
-
-## Testes
-
-- Recálculo das planilhas no LibreOffice.
-- Testes de interface com Playwright.
-- Comparação, valor a valor, entre a planilha exportada e o `core.js` (0 divergências).
+A aba **Ajuda**, dentro do sistema, explica cada tela e cada regra. Problemas e sugestões de melhoria podem ser enviados à Coordenação-Geral de Documentação, Registro e Jornada de Trabalho.
 
 ---
 Coordenação-Geral de Documentação, Registro e Jornada de Trabalho — HU Brasil
