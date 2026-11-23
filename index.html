@@ -1447,7 +1447,7 @@ if (typeof module !== 'undefined') module.exports = Core;
   let sel = null, visiveis = [], desfazer = [], refazer = [], area = null, arrastando = false, enchendo = null;
   const mf = () => C.mapaFeriados(S.feriados);
   const gw = $('gridwrap'), G = $('grade'), dg = $('digita');
-  const QD = [['contr', 'CH Contratual', '#8FB1EA'], ['esc', 'CH Escala Regular', '#2E9E48'], ['conv', 'CH Conversão DA', '#E3B27A'], ['da', 'CH Escala DA', '#C77618'], ['cons', 'CH Escala Regular e DA', '#F2701D'], ['saldo', 'Saldo', '#FFFFFF'], ['je', 'CH JE', '#C0CA33'], ['sa', 'CH Escala SA', '#C9A53A'],
+  const QD = [['contr', 'CH Contratual', '#8FB1EA'], ['esc', 'CH Escala Regular', '#2E9E48'], ['conv', 'CH Conversão DA', '#E3B27A'], ['da', 'CH Escala DA', '#C77618'], ['cons', 'CH Escala Regular e DA', '#F2701D'], ['je', 'CH JE', '#C0CA33'], ['sa', 'CH Escala SA', '#C9A53A'], ['saldo', 'Saldo', '#FFFFFF'],
     ['lic', 'LM/LP/L', '#8FB1EA'], ['fe', 'FE', '#E8776E'], ['af', 'AF', '#5DB075'], ['acch', 'AC/CH', '#2E9E48'], ['ft', 'Faltas', '#E57373']];
   const QT = { contr: 'Carga horária contratual do mês', conv: 'Horas da CH contratual do mês convertidas em Disponibilidade Alcançável (cada 1h convertida corresponde a 3h de DA)', esc: 'Horas das jornadas regulares do mês (sem a Jornada Extraordinária)', je: 'Horas de Jornada Extraordinária (não entram na escala regular nem no saldo)',
     da: 'Tempo total de Disponibilidade Alcançável escalado', sa: 'Horas de sobreaviso (não entram no saldo)', cons: 'CH Escala Regular + horas abonadas da DA',
@@ -1478,7 +1478,7 @@ if (typeof module !== 'undefined') module.exports = Core;
     if (!C.CH_TAB[s.ch]) p.push('Sem CH semanal: o quadro de frequência não é calculado');
     return p;
   }
-  const QW = [68, 64, 72, 58, 84, 56, 46, 58, 60, 40, 40, 52, 52];
+  const QW = [68, 64, 72, 58, 84, 46, 58, 56, 60, 40, 40, 52, 52];
   const regOk = k => !(((k === 'da' || k === 'cons' || k === 'conv') && !S.temDA) || (k === 'sa' && !S.temSA) || (k === 'je' && !S.qJE));   // sem DA não há consolidado; CH JE só quando o gestor ativa
   const oculta = k => (S.qOcultas || []).includes(k);
   const qdReg = () => QD.filter(q => regOk(q[0]) && !oculta(q[0]));
@@ -1621,7 +1621,7 @@ if (typeof module !== 'undefined') module.exports = Core;
     const s = visiveis.find(x => x.id === cs.value);
     if (!s) { $('cs-corpo').innerHTML = '<p class="dica" style="margin-top:12px">Nenhum empregado cadastrado.</p>'; return; }
     const cel = e[s.id] || {}, q = C.quadro(s, cel, S.ano, S.mes, F);
-    let t = '<div class="cs-q">' + [['CH Contratual', fmt(q.contr)], ['CH Escala Regular', fmt(q.esc)]].concat(S.temDA ? [['CH Conversão DA', fmt(q.conv)], ['CH Escala DA', fmt(q.da)], ['CH Escala Regular e DA', fmt(q.cons)]] : [], [['Saldo', fmtSaldo(q.saldo)]], S.qJE ? [['CH JE', fmt(q.je)]] : [], S.temSA ? [['CH Escala SA', fmt(q.sa)]] : []).map(x => '<div>' + x[0] + '<b>' + (x[1] || '–') + '</b></div>').join('') + '</div>';
+    let t = '<div class="cs-q">' + [['CH Contratual', fmt(q.contr)], ['CH Escala Regular', fmt(q.esc)]].concat(S.temDA ? [['CH Conversão DA', fmt(q.conv)], ['CH Escala DA', fmt(q.da)], ['CH Escala Regular e DA', fmt(q.cons)]] : [], S.qJE ? [['CH JE', fmt(q.je)]] : [], S.temSA ? [['CH Escala SA', fmt(q.sa)]] : [], [['Saldo', fmtSaldo(q.saldo)]]).map(x => '<div>' + x[0] + '<b>' + (x[1] || '–') + '</b></div>').join('') + '</div>';
     info.forEach(i => {
       const c = cel[i.d];
       t += '<div class="cs-dia ' + i.cls + '"><span class="d">' + i.d + '</span><span class="w">' + C.DIAS[i.w] + '</span>'
