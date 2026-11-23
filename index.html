@@ -476,6 +476,13 @@ table.quadro td.pos{background:var(--ok-bg);color:var(--ok);font-weight:bold}
 #tip{position:fixed;z-index:60;max-width:320px;background:#22304A;color:#fff;font-size:12px;line-height:1.4;padding:8px 10px;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.25);pointer-events:none;white-space:pre-line}
 #tip[hidden]{display:none}
 .nome .ic-al:focus-visible,.nome .wn:focus-visible{outline:2px solid var(--pri);outline-offset:1px;border-radius:2px}
+.grade th.q{position:relative}
+.grade th.q .olho{position:absolute;top:2px;right:2px;width:16px;height:16px;padding:0;border:0;border-radius:3px;background:rgba(255,255,255,.18);cursor:pointer;opacity:0;display:flex;align-items:center;justify-content:center}
+.grade th.q:hover .olho,.grade th.q .olho:focus-visible{opacity:1}
+.grade th.q .olho svg{width:12px;height:12px;fill:none;stroke:#fff;stroke-width:1.5}
+#m-cols .tit{font-size:12px;font-weight:bold;color:#5a6782;margin:8px 4px 2px;border-top:1px solid #e2e8f0;padding-top:8px}
+#m-cols .olho-i{width:14px;height:14px;vertical-align:-2px;margin-right:4px;fill:none;stroke:currentColor;stroke-width:1.5}
+@media print{.grade th.q .olho{display:none}}
 </style>
 </head>
 <body data-v="escala">
@@ -769,7 +776,7 @@ table.quadro td.pos{background:var(--ok-bg);color:var(--ok);font-weight:bold}
           <li>Sem DSR no mês: nenhum domingo de folga precedido de sábado de folga. O POP.DGP.042 prevê ao menos um fim de semana não trabalhado por mês.</li>
           <li>Sobreaviso acima de 24h na semana (domingo a sábado).</li>
           <li>Dispensa (DISP) sem jornada escalada ou em dia que não é feriado nem ponto facultativo.</li>
-          <li>Disponibilidade Alcançável: CH convertida acima de 50% da CH contratual; DA na escala sem CH convertida no cadastro; DA escalada diferente da DA contratual do mês, para mais ou para menos; escala presencial somada à DA (contada a 1/3) acima da CH contratual; DA em dia com jornada regular (POP.DGP.108, item 6.6).</li>
+          <li>Disponibilidade Alcançável: CH convertida acima de 50% da CH contratual; DA na escala sem CH convertida no cadastro; DA escalada diferente de 3 vezes a conversão do mês, para mais ou para menos; escala presencial somada à DA (contada a 1/3) acima da CH contratual; DA em dia com jornada regular (POP.DGP.108, item 6.6).</li>
           <li>Férias no mês com saldo diferente de zero: em mês de férias, a escala deve fechar exatamente a CH contratual. Na escala 12x36 (maioria dos dias em plantão de 12h ou 24h), aceita-se diferença de até 12h, para mais ou para menos.</li>
         </ul>
         <p>Dias com afastamento, licença, DSR, SJ ou sem jornada contam como não trabalhados. A Jornada Extraordinária conta como dia trabalhado. Na lista, clique no nome do empregado para localizá-lo na escala.</p>
@@ -848,8 +855,7 @@ table.quadro td.pos{background:var(--ok-bg);color:var(--ok);font-weight:bold}
             <thead><tr><th scope="col" style="width:190px">Coluna</th><th scope="col">O que mostra</th></tr></thead>
             <tbody>
               <tr><td><strong>CH Contratual</strong></td><td>Carga horária contratual do mês.</td></tr>
-              <tr><td><strong>CH Contratual Presencial</strong></td><td>Parte da CH contratual cumprida de forma presencial: CH contratual menos as horas convertidas em DA. Só aparece quando a unidade tem o regime de DA.</td></tr>
-              <tr><td><strong>CH Contratual DA</strong></td><td>Disponibilidade Alcançável prevista no contrato para o mês: horas semanais convertidas × 3, na proporção do mês. Ex.: 24h semanais com 12h convertidas = 12h presenciais + 36h de DA por semana.</td></tr>
+              <tr><td><strong>CH Conversão DA</strong></td><td>Horas da CH contratual do mês convertidas em Disponibilidade Alcançável. Cada 1h convertida corresponde a 3h de DA na escala. Ex.: CH contratual de 100h com 12h semanais convertidas (de 24h) = conversão de 50h; a escala fica com 50h de jornada regular e 150h de DA, e a CH Escala Regular e DA fecha em 100h. Só aparece quando a unidade tem o regime de DA.</td></tr>
               <tr><td><strong>CH Escala Regular</strong></td><td>Horas das jornadas regulares do mês.</td></tr>
               <tr><td><strong>CH JE</strong></td><td>Horas de Jornada Extraordinária. A coluna fica oculta até ser ativada em <strong>Exibir › Coluna CH JE (Jornada Extraordinária)</strong>. Ao lançar JE, o sistema avisa que a coluna pode ser ativada.</td></tr>
               <tr><td><strong>CH Escala DA</strong></td><td>Tempo total de Disponibilidade Alcançável escalado. Ex.: DA das 6h às 12h = 6h nesta coluna.</td></tr>
@@ -880,6 +886,7 @@ table.quadro td.pos{background:var(--ok-bg);color:var(--ok);font-weight:bold}
   <label class="marca"><input type="checkbox" id="m-comp"> Colunas de dia compactas</label>
   <label class="marca"><input type="checkbox" id="m-tot"> Todos os totais do dia</label>
   <label class="marca"><input type="checkbox" id="m-je"> Coluna CH JE (Jornada Extraordinária)</label>
+  <div id="m-cols"></div>
 </div>
 <div class="menu" id="menu-print" role="group" aria-label="Opções de impressão">
   <label class="marca"><input type="checkbox" id="f-pq"> Incluir os quadros de Frequência e de Ocorrências (em página própria)</label>
@@ -1096,8 +1103,8 @@ const Core = (function () {
     q.saldo = q.contr === null ? null : q.cons - q.contr;
     // CH contratual dividida entre presencial e DA (conversão de até 50%, 1h = 3h de DA)
     const conv = Math.max(0, +serv.daConv || 0);
-    if (q.contr === null) { q.contrP = null; q.contrDA = null; }
-    else { const fr = serv.ch ? Math.min(conv, serv.ch) / serv.ch : 0; q.contrDA = arred(q.contr * fr * 3); q.contrP = arred(q.contr * (1 - fr)); }
+    if (q.contr === null) { q.conv = null; q.contrP = null; q.contrDA = null; }
+    else { const fr = serv.ch ? Math.min(conv, serv.ch) / serv.ch : 0; q.conv = arred(q.contr * fr); q.contrDA = arred(q.conv * 3); q.contrP = arred(q.contr - q.conv); }
     return q;
   }
 
@@ -1197,7 +1204,7 @@ const Core = (function () {
       const f1 = v => String(Math.round(v * 10) / 10).replace('.', ',') + 'h';
       if (conv > 0 && serv.ch && conv > serv.ch / 2) itens.push({ tipo: 'da', txt: quem + ' tem ' + conv + 'h semanais convertidas em DA, acima do limite de 50% da CH contratual (' + (serv.ch / 2) + 'h).' });
       if (!conv && q.da > 0) itens.push({ tipo: 'da', txt: quem + ' tem Disponibilidade Alcançável na escala, mas o cadastro não informa a CH semanal convertida em DA.' });
-      if (conv > 0 && q.contrDA !== null && Math.abs(q.da - q.contrDA) > 0.5) itens.push({ tipo: 'da', txt: quem + ' tem ' + f1(q.da) + ' de DA na escala, mas a DA contratual do mês é de ' + f1(q.contrDA) + ' (' + conv + 'h semanais convertidas × 3).' });
+      if (conv > 0 && q.contrDA !== null && Math.abs(q.da - q.contrDA) > 0.5) itens.push({ tipo: 'da', txt: quem + ' tem ' + f1(q.da) + ' de DA na escala, mas a conversão do mês é de ' + f1(q.conv) + ', que corresponde a ' + f1(q.contrDA) + ' de DA (1h convertida = 3h de DA).' });
       if (q.da > 0 && q.contr !== null && q.cons - q.contr > 0.5) itens.push({ tipo: 'da', txt: quem + ': a escala presencial somada à DA (contada a 1/3) dá ' + f1(q.cons) + ', acima da CH contratual de ' + f1(q.contr) + '. Isso descaracteriza o regime de DA.' });
       if (daIni.length) itens.push({ tipo: 'da', dias: daIni, txt: quem + ': DA lançada em dia com jornada regular (dia ' + daIni.join(', ') + '). Em regra, a DA deve começar em dia sem jornada regular (POP.DGP.108, item 6.6).' });
       daDias = daIni;
@@ -1307,10 +1314,11 @@ if (typeof module !== 'undefined') module.exports = Core;
   let armazenaOk = true;
   function novoEstado() {
     return { v: 1, hu: '', lotacao: '', ano: 2027, mes: 1, servidores: [], feriados: C.feriadosNacionais(2027), escala: {}, codigos: {},
-      cadCols: false, compacto: false, painel: null, totais: false, pq: false, qFreq: true, qOcor: false, qJE: false, temDA: true, temSA: true, logoHU: null, ultimoBackup: null, ultimoBackupTs: null };
+      cadCols: false, compacto: false, painel: null, totais: false, pq: false, qFreq: true, qOcor: false, qJE: false, qOcultas: [], temDA: true, temSA: true, logoHU: null, ultimoBackup: null, ultimoBackupTs: null };
   }
   function normaliza(o) {
     const s = Object.assign(novoEstado(), o);
+    if (!Array.isArray(s.qOcultas)) s.qOcultas = [];
     (s.servidores || []).forEach(x => { x.cargo = casaCargo(x.cargo); delete x.intervalo; if (x.especialidade === undefined) x.especialidade = ''; x.sa = !!x.sa; x.da = !!x.da; if (x.daConv === undefined) x.daConv = ''; x.daConv = x.daConv === '' ? '' : +x.daConv || ''; if (x.daConv) x.da = true; });
     Object.values(s.escala || {}).forEach(em => Object.values(em || {}).forEach(dias => Object.values(dias || {}).forEach(c => { if (c && c.r) c.r = c.r.replace(/-(DISF|DISPF|DisF|DisPF)$/, '-DISP'); })));
     if (!s.ultimoBackupTs && s.ultimoBackup) { const m = /^(\d\d)\/(\d\d)\/(\d{4}) (\d\d):(\d\d)/.exec(s.ultimoBackup); if (m) s.ultimoBackupTs = new Date(+m[3], +m[2] - 1, +m[1], +m[4], +m[5]).getTime(); }
@@ -1439,13 +1447,13 @@ if (typeof module !== 'undefined') module.exports = Core;
   let sel = null, visiveis = [], desfazer = [], refazer = [], area = null, arrastando = false, enchendo = null;
   const mf = () => C.mapaFeriados(S.feriados);
   const gw = $('gridwrap'), G = $('grade'), dg = $('digita');
-  const QD = [['contr', 'CH Contratual', '#8FB1EA'], ['contrP', 'CH Contratual Presencial', '#A9C4EF'], ['contrDA', 'CH Contratual DA', '#E3B27A'], ['esc', 'CH Escala Regular', '#2E9E48'], ['je', 'CH JE', '#C0CA33'], ['da', 'CH Escala DA', '#C77618'], ['sa', 'CH Escala SA', '#C9A53A'], ['cons', 'CH Escala Regular e DA', '#F2701D'], ['saldo', 'Saldo', '#FFFFFF'],
+  const QD = [['contr', 'CH Contratual', '#8FB1EA'], ['esc', 'CH Escala Regular', '#2E9E48'], ['conv', 'CH Conversão DA', '#E3B27A'], ['da', 'CH Escala DA', '#C77618'], ['cons', 'CH Escala Regular e DA', '#F2701D'], ['saldo', 'Saldo', '#FFFFFF'], ['je', 'CH JE', '#C0CA33'], ['sa', 'CH Escala SA', '#C9A53A'],
     ['lic', 'LM/LP/L', '#8FB1EA'], ['fe', 'FE', '#E8776E'], ['af', 'AF', '#5DB075'], ['acch', 'AC/CH', '#2E9E48'], ['ft', 'Faltas', '#E57373']];
-  const QT = { contr: 'Carga horária contratual do mês', contrP: 'Parte da CH contratual cumprida de forma presencial (CH contratual − horas convertidas em DA)', contrDA: 'Disponibilidade Alcançável contratual do mês: horas semanais convertidas × 3, na proporção do mês', esc: 'Horas das jornadas regulares do mês (sem a Jornada Extraordinária)', je: 'Horas de Jornada Extraordinária (não entram na escala regular nem no saldo)',
+  const QT = { contr: 'Carga horária contratual do mês', conv: 'Horas da CH contratual do mês convertidas em Disponibilidade Alcançável (cada 1h convertida corresponde a 3h de DA)', esc: 'Horas das jornadas regulares do mês (sem a Jornada Extraordinária)', je: 'Horas de Jornada Extraordinária (não entram na escala regular nem no saldo)',
     da: 'Tempo total de Disponibilidade Alcançável escalado', sa: 'Horas de sobreaviso (não entram no saldo)', cons: 'CH Escala Regular + horas abonadas da DA',
     saldo: 'CH Escala Regular (e DA abonada, se houver) − CH Contratual',
     lic: 'Dias de licença (LM, LP, L)', fe: 'Dias de férias', af: 'Dias com AB, AC, CH, AT, AFHU, FE, RC, 2MP ou AFIN', acch: 'Dias com AC ou CH', ft: 'Dias com falta (FT e FTIN)' };
-  const QOC = 9;   // a partir desta coluna: Quadro de Ocorrências
+  const QOC = 8;   // a partir desta coluna: Quadro de Ocorrências
   const TOT = [['mat', 'Matutinos no dia'], ['vesp', 'Vespertinos no dia'], ['diu', 'Plantão Diurno'], ['not', 'Plantão Noturno'], ['aus', 'Ausentes (afast./férias)'], ['trab', 'Total trabalhando hoje'], ['da', 'Empregados em DA'], ['sa', 'Empregados em SA']];
 
   function servidoresDoMes() {
@@ -1470,11 +1478,12 @@ if (typeof module !== 'undefined') module.exports = Core;
     if (!C.CH_TAB[s.ch]) p.push('Sem CH semanal: o quadro de frequência não é calculado');
     return p;
   }
-  const QW = [68, 76, 70, 64, 46, 58, 58, 84, 56, 60, 40, 40, 52, 52];
-  const regOk = k => !(((k === 'da' || k === 'cons' || k === 'contrP' || k === 'contrDA') && !S.temDA) || (k === 'sa' && !S.temSA) || (k === 'je' && !S.qJE));   // sem DA não há consolidado; CH JE só quando o gestor ativa
-  const qdReg = () => QD.filter(q => regOk(q[0]));
+  const QW = [68, 64, 72, 58, 84, 56, 46, 58, 60, 40, 40, 52, 52];
+  const regOk = k => !(((k === 'da' || k === 'cons' || k === 'conv') && !S.temDA) || (k === 'sa' && !S.temSA) || (k === 'je' && !S.qJE));   // sem DA não há consolidado; CH JE só quando o gestor ativa
+  const oculta = k => (S.qOcultas || []).includes(k);
+  const qdReg = () => QD.filter(q => regOk(q[0]) && !oculta(q[0]));
   function qVis() {
-    const v = []; QD.forEach((q, i) => { if (regOk(q[0]) && (i < QOC ? S.qFreq : S.qOcor)) v.push(i); });
+    const v = []; QD.forEach((q, i) => { if (regOk(q[0]) && !oculta(q[0]) && (i < QOC ? S.qFreq : S.qOcor)) v.push(i); });
     const prim = new Set([v.find(i => i < QOC), v.find(i => i >= QOC)].filter(x => x !== undefined));
     const dir = {}; let ac = 0; for (let k = v.length - 1; k >= 0; k--) { dir[v[k]] = ac; ac += QW[v[k]]; }
     return { n: v.length, total: ac, cls: i => (i >= QOC ? ' oc' : '') + (dir[i] === undefined ? '' : ' k' + (prim.has(i) ? ' k1' : '')), css: i => dir[i] === undefined ? '' : 'right:' + dir[i] + 'px;width:' + QW[i] + 'px;min-width:' + QW[i] + 'px;' };
@@ -1497,7 +1506,28 @@ if (typeof module !== 'undefined') module.exports = Core;
     return { info, F, n };
   }
 
+
+  const OLHO = on => '<svg class="olho-i" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 8s2.4-4.5 6.5-4.5S14.5 8 14.5 8 12.1 12.5 8 12.5 1.5 8 1.5 8z"/>' + (on ? '<circle cx="8" cy="8" r="2"/>' : '<path d="M2.5 2.5l11 11"/>') + '</svg>';
+  function menuCols() {
+    const el = $('m-cols'); if (!el) return;
+    const disp = QD.filter(q => q[0] !== 'je' && !(((q[0] === 'da' || q[0] === 'cons' || q[0] === 'conv') && !S.temDA) || (q[0] === 'sa' && !S.temSA)));
+    const grupo = (tit, l) => l.length ? '<div class="tit">' + tit + '</div>' + l.map(q => '<label class="marca"><input type="checkbox" data-col="' + q[0] + '"' + (oculta(q[0]) ? '' : ' checked') + '> ' + OLHO(!oculta(q[0])) + h(q[1]) + '</label>').join('') : '';
+    el.innerHTML = grupo('Colunas do Quadro de Frequência', disp.filter(q => QD.indexOf(q) < QOC)) + grupo('Colunas do Quadro de Ocorrências', disp.filter(q => QD.indexOf(q) >= QOC));
+  }
+  function trocaCol(k, mostrar) {
+    if (k === 'je') S.qJE = !!mostrar;
+    else { S.qOcultas = (S.qOcultas || []).filter(x => x !== k); if (!mostrar) S.qOcultas.push(k); }
+    salvar(); desenhaEstado(); desenhaEscala();
+  }
+  document.addEventListener('change', e => { const k = e.target.dataset && e.target.dataset.col; if (k) trocaCol(k, e.target.checked); });
+  document.addEventListener('click', e => {
+    const b = e.target.closest && e.target.closest('.olho[data-oc]'); if (!b) return;
+    e.preventDefault(); e.stopPropagation(); const k = b.dataset.oc, nome = (QD.find(q => q[0] === k) || [])[1];
+    trocaCol(k, false);
+    toast('Coluna ' + nome + ' ocultada. Para exibir de novo, use o menu Exibir.', 'info', { rotulo: 'Desfazer', fn: () => trocaCol(k, true) });
+  }, true);
   function desenhaEscala() {
+    menuCols();
     $('f-ano').value = S.ano; $('tb-ano').textContent = S.ano; $('b-ant').disabled = S.mes === 1; $('b-prox').disabled = S.mes === 12; $('b-qfreq').setAttribute('aria-pressed', S.qFreq ? 'true' : 'false'); $('b-qocor').setAttribute('aria-pressed', S.qOcor ? 'true' : 'false'); aplicaRegime();
     $('f-mes').value = S.mes; $('f-pq').checked = !!S.pq;  $('b-cad').setAttribute('aria-pressed', S.cadCols ? 'true' : 'false'); $('b-cad').classList.toggle('on', !!S.cadCols); $('m-comp').checked = !!S.compacto; $('m-tot').checked = !!S.totais; $('m-je').checked = !!S.qJE;
     const B = document.body.classList;
@@ -1512,7 +1542,7 @@ if (typeof module !== 'undefined') module.exports = Core;
     let t = '<thead><tr><th class="fixo" scope="col">Empregado</th><th class="cad" scope="col">Matrícula<br>SIAPE</th><th class="cad" scope="col">Cargo</th><th class="cad" scope="col">Registro<br>Conselho</th><th class="cad" scope="col">Vínculo</th><th class="cad" scope="col">CH<br>Sem</th><th class="cad" scope="col">Especialidade</th>';
     info.forEach(i => { t += '<th class="dia ' + i.cls + '" scope="col" data-d="' + i.d + '" title="' + h(i.tit || 'Clique para selecionar o dia ' + i.d + ' de todos') + '">' + i.d + '<small>' + C.DIAS[i.w] + '</small></th>'; });
     const QV = qVis(); gw.style.scrollPaddingRight = (QV.total + 6) + 'px';
-    QD.forEach((q, i) => { t += '<th class="q' + QV.cls(i) + '" scope="col" title="' + (i < QOC ? 'Quadro de Frequência: ' : 'Quadro de Ocorrências: ') + h(QT[q[0]]) + '" style="box-shadow:inset 0 3px 0 ' + q[2] + ';' + QV.css(i) + '">' + q[1].replace('CH ', 'CH<br>') + '</th>'; });
+    QD.forEach((q, i) => { t += '<th class="q' + QV.cls(i) + '" scope="col" title="' + (i < QOC ? 'Quadro de Frequência: ' : 'Quadro de Ocorrências: ') + h(QT[q[0]]) + '" style="box-shadow:inset 0 3px 0 ' + q[2] + ';' + QV.css(i) + '">' + q[1].replace('CH ', 'CH<br>') + '<button class="olho" data-oc="' + q[0] + '" aria-label="Ocultar a coluna ' + h(q[1]) + '" title="Ocultar coluna"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 8s2.4-4.5 6.5-4.5S14.5 8 14.5 8 12.1 12.5 8 12.5 1.5 8 1.5 8z"/><circle cx="8" cy="8" r="2"/></svg></button></th>'; });
     t += '</tr></thead><tbody>';
     visiveis.forEach((s, si) => {
       const cel = e[s.id] || {}, q = C.quadro(s, cel, a, m, F), pen = pendencias(s), al = alertas(s, cel);
@@ -1591,7 +1621,7 @@ if (typeof module !== 'undefined') module.exports = Core;
     const s = visiveis.find(x => x.id === cs.value);
     if (!s) { $('cs-corpo').innerHTML = '<p class="dica" style="margin-top:12px">Nenhum empregado cadastrado.</p>'; return; }
     const cel = e[s.id] || {}, q = C.quadro(s, cel, S.ano, S.mes, F);
-    let t = '<div class="cs-q">' + [['CH Contratual', fmt(q.contr)]].concat(S.temDA ? [['CH Contratual Presencial', fmt(q.contrP)], ['CH Contratual DA', fmt(q.contrDA)]] : [], [['CH Escala Regular', fmt(q.esc)]], S.qJE ? [['CH JE', fmt(q.je)]] : [], S.temDA ? [['CH Escala DA', fmt(q.da)]] : [], S.temSA ? [['CH Escala SA', fmt(q.sa)]] : [], S.temDA ? [['CH Escala Regular e DA', fmt(q.cons)]] : [], [['Saldo', fmtSaldo(q.saldo)]]).map(x => '<div>' + x[0] + '<b>' + (x[1] || '–') + '</b></div>').join('') + '</div>';
+    let t = '<div class="cs-q">' + [['CH Contratual', fmt(q.contr)], ['CH Escala Regular', fmt(q.esc)]].concat(S.temDA ? [['CH Conversão DA', fmt(q.conv)], ['CH Escala DA', fmt(q.da)], ['CH Escala Regular e DA', fmt(q.cons)]] : [], [['Saldo', fmtSaldo(q.saldo)]], S.qJE ? [['CH JE', fmt(q.je)]] : [], S.temSA ? [['CH Escala SA', fmt(q.sa)]] : []).map(x => '<div>' + x[0] + '<b>' + (x[1] || '–') + '</b></div>').join('') + '</div>';
     info.forEach(i => {
       const c = cel[i.d];
       t += '<div class="cs-dia ' + i.cls + '"><span class="d">' + i.d + '</span><span class="w">' + C.DIAS[i.w] + '</span>'
