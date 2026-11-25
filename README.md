@@ -13,11 +13,12 @@ Não precisa instalar nada nem estar conectado à internet.
 
 ## Passo a passo
 
-1. **Administração:** informe a lotação e cadastre os empregados, com matrícula, cargo, CH semanal e, se houver, as horas convertidas em Disponibilidade Alcançável (DA). Dá para colar a lista direto do Excel.
-2. **Feriados:** clique em **Carregar nacionais** e inclua os feriados locais e os pontos facultativos.
+1. **Administração:** informe a lotação e cadastre os empregados, com matrícula, cargo (da lista ou digitado), CH semanal (de 1h a 40h) e, se houver, as horas convertidas em Disponibilidade Alcançável (DA). Dá para colar a lista direto do Excel.
+2. **Feriados:** clique em **Carregar nacionais** e inclua os feriados locais e os pontos facultativos. Também dá para colar do Excel ou importar um arquivo .csv.
 3. **Escala:** escolha o mês, clique no dia e escolha a sigla no painel à direita, ou digite direto na célula (ex.: `MT22`, `D12 AT`).
-4. **Conferir:** veja o **Saldo** de cada empregado e clique em **Inconsistências** para ver o que está fora das regras.
-5. **Exportar:** gere a planilha Excel (do mês ou do ano) ou o arquivo de importação do MentorH.
+4. **Observações:** selecione o dia e escreva a troca de plantão ou outra ocorrência em **Observação do dia**. Há também um campo de observações do mês.
+5. **Conferir:** veja o **Saldo** de cada empregado e clique em **Inconsistências** para ver o que está fora das regras.
+6. **Exportar:** gere a planilha Excel (do mês ou do ano) ou o arquivo de importação do MentorH.
 
 ## O que o sistema confere
 
@@ -26,7 +27,7 @@ Não precisa instalar nada nem estar conectado à internet.
 - Sobreaviso acima de 24 horas na semana.
 - Mês sem DSR.
 - Dispensa (DISP) sem jornada ou em dia que não é feriado nem ponto facultativo.
-- Mês de férias em que a escala não fecha a CH contratual (na escala 12x36, aceita até 12h de diferença).
+- Férias: cada parcela deve ter de 5 a 30 dias seguidos, e a CH registrada no período deve ser igual à CH contratual do período (na 12x36, aceita até 12h de diferença; no plantão de 24h, exata). FE pode ser lançado sozinho em qualquer dia.
 - Disponibilidade Alcançável fora da conversão: horas convertidas acima de 50% da CH, DA diferente de 3 vezes a conversão, ou DA em dia com jornada.
 
 ## Quadro de horas
@@ -45,6 +46,10 @@ Não precisa instalar nada nem estar conectado à internet.
 Exemplo: CH contratual de 100h com conversão de 50h → 50h de escala regular + 150h de DA = 100h, saldo 0.
 
 Qualquer coluna pode ser ocultada pelo ícone do olho no cabeçalho e exibida de novo pelo menu **Exibir**.
+
+## Consulta e alteração
+
+O botão **Alteração**/**Consulta**, no alto, trava a escala, o cadastro e os feriados para evitar mudanças por engano. Em modo consulta, qualquer tentativa de alterar pergunta se você quer liberar.
 
 ## Atenção: faça backup
 
