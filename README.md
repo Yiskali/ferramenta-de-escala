@@ -13,7 +13,7 @@ Não precisa instalar nada nem estar conectado à internet.
 
 ## Passo a passo
 
-1. **Administração:** informe a lotação e cadastre os empregados, com matrícula, cargo (da lista ou digitado), CH semanal (de 1h a 40h) e, se houver, as horas convertidas em Disponibilidade Alcançável (DA). Dá para colar a lista direto do Excel.
+1. **Administração:** informe o nome do HU e da escala e cadastre os empregados, com matrícula, cargo (da lista ou digitado), CH semanal (de 1h a 40h) e, se houver, as horas convertidas em Disponibilidade Alcançável (DA). Dá para colar a lista direto do Excel.
 2. **Feriados:** clique em **Carregar nacionais** e inclua os feriados locais e os pontos facultativos. Também dá para colar do Excel ou importar um arquivo .csv.
 3. **Escala:** escolha o mês, clique no dia e escolha a sigla no painel à direita, ou digite direto na célula (ex.: `MT22`, `D12 AT`).
 4. **Observações:** selecione o dia e escreva a troca de plantão ou outra ocorrência em **Observação do dia**. Há também um campo de observações do mês.
@@ -28,6 +28,7 @@ Não precisa instalar nada nem estar conectado à internet.
 - Mês sem DSR.
 - Dispensa (DISP) sem jornada ou em dia que não é feriado nem ponto facultativo.
 - Férias: cada parcela deve ter de 5 a 30 dias seguidos, e a CH registrada no período deve ser igual à CH contratual do período (na 12x36, aceita até 12h de diferença; no plantão de 24h, exata). FE pode ser lançado sozinho em qualquer dia.
+- Mesmo empregado com horários sobrepostos em duas escalas da unidade.
 - Disponibilidade Alcançável fora da conversão: horas convertidas acima de 50% da CH, DA diferente de 3 vezes a conversão, ou DA em dia com jornada.
 
 ## Quadro de horas
@@ -47,6 +48,10 @@ Exemplo: CH contratual de 100h com conversão de 50h → 50h de escala regular +
 
 Qualquer coluna pode ser ocultada pelo ícone do olho no cabeçalho e exibida de novo pelo menu **Exibir**.
 
+## Várias escalas na mesma unidade
+
+A unidade pode ter mais de uma escala (ex.: Enfermagem e Médicos). Escolha a escala na lista ao lado do mês; no botão **⋯** dá para criar, renomear, duplicar ou excluir escalas. O cadastro de empregados e os feriados são os mesmos para todas: em **Administração**, marque em **Nesta escala** quem entra na escala aberta. Cada escala tem seus próprios regimes (DA/SA), lançamentos e observações. Em **Exportar** há opções para gerar o arquivo do MentorH e as planilhas de todas as escalas de uma vez.
+
 ## Consulta e alteração
 
 O botão **Alteração**/**Consulta**, no alto, trava a escala, o cadastro e os feriados para evitar mudanças por engano. Em modo consulta, qualquer tentativa de alterar pergunta se você quer liberar.
@@ -56,7 +61,7 @@ O botão **Alteração**/**Consulta**, no alto, trava a escala, o cadastro e os 
 Os dados ficam salvos **só no navegador do computador** onde a escala foi feita. Em outro computador ou navegador, a escala aparece vazia, e limpar os dados de navegação apaga tudo.
 
 - Ao terminar, clique em **Backup › Salvar backup** e guarde o arquivo na pasta do setor.
-- Para continuar em outro computador, clique em **Backup › Restaurar backup** e escolha esse arquivo.
+- Para continuar em outro computador, clique em **Backup › Restaurar backup** e escolha esse arquivo. O sistema pergunta se o backup deve **substituir** os dados ou ser **acrescentado** como escala(s) nova(s).
 
 ## Dúvidas
 
