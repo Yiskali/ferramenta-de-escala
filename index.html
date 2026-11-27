@@ -494,6 +494,11 @@ body.consulta .btn.modo{background:#FFF4D6;color:#8A4B00;border-color:#E0A100}
 body.consulta .painel .ptabs,body.consulta .painel .pbody{opacity:.55}
 body.consulta #v-servidores input,body.consulta #v-servidores select,body.consulta #v-feriados input,body.consulta #v-feriados select{background:#f4f6fa;cursor:not-allowed}
 @media print{.btn.modo{display:none}}
+.barra .lot{display:flex;align-items:center;gap:4px;flex:1 1 130px;max-width:300px;min-width:130px;margin:0 4px}
+#sel-esc{flex:1 1 auto;width:0;min-width:0;font-weight:600;color:#1F4788;padding:6px 8px;text-overflow:ellipsis}
+#b-esc-menu{flex:none}
+.esc-outras{display:block;font-size:11px;color:var(--tx2);margin-top:2px}
+#t-serv td.mb{text-align:center}
 </style>
 </head>
 <body data-v="escala">
@@ -614,14 +619,15 @@ body.consulta #v-servidores input,body.consulta #v-servidores select,body.consul
 <!-- ================= SERVIDORES ================= -->
 <section class="view" id="v-servidores"><div class="pagina">
   <div class="cartao">
-    <h2>Dados da unidade</h2>
+    <h2>Dados da unidade e da escala</h2>
+    <p class="dica" style="margin-top:-4px">O nome do HU, os feriados e o cadastro de empregados valem para todas as escalas da unidade. O nome, os regimes e os empregados de cada escala mudam com a escala aberta, escolhida no alto da aba Escala.</p>
     <div class="grade2">
       <div><label class="rot" for="f-hu">Nome do HU</label><input class="campo" id="f-hu" style="width:100%" autocomplete="off"></div>
-      <div><label class="rot" for="f-lot">Lotação (unidade / setor)</label><input class="campo" id="f-lot" style="width:100%" autocomplete="off"></div>
+      <div><label class="rot" for="f-lot">Nome da escala aberta (lotação / posto)</label><input class="campo" id="f-lot" style="width:100%" autocomplete="off"></div>
     </div>
     <div class="grade2" style="margin-top:16px">
       <div><label class="rot" for="f-ano">Ano da escala</label><input type="number" class="campo" id="f-ano" min="2020" max="2100" style="width:120px"><p class="dica" style="margin-top:4px">Vale para todos os meses.</p></div>
-      <div><span class="rot">Regimes existentes na unidade</span>
+      <div><span class="rot">Regimes existentes nesta escala</span>
         <label class="marca"><input type="checkbox" id="f-da"> Disponibilidade Alcançável (DA)</label>
         <label class="marca" style="margin-top:4px"><input type="checkbox" id="f-sa"> Sobreaviso (SA)</label>
         <p class="dica" style="margin-top:4px">Desmarcado, o regime não aparece no lançamento, nos totais nem no quadro.</p></div>
@@ -686,6 +692,7 @@ body.consulta #v-servidores input,body.consulta #v-servidores select,body.consul
       <a href="#resumo">Resumo rápido</a>
       <a href="#como-fazer">Como fazer</a>
       <a class="sub" href="#cadastrar">Cadastrar unidade e empregados</a>
+      <a class="sub" href="#varias-escalas">Várias escalas na unidade</a>
       <a class="sub" href="#feriados">Conferir feriados</a>
       <a class="sub" href="#lancar">Lançar a escala</a>
       <a class="sub" href="#afastamento">Jornada com afastamento</a>
@@ -724,12 +731,21 @@ body.consulta #v-servidores input,body.consulta #v-servidores select,body.consul
 
         <h4 class="aj-h3" id="cadastrar" tabindex="-1">Cadastrar unidade e empregados</h4>
         <ol>
-          <li>Na aba <button class="lnk aj-l" data-ir="servidores">Administração</button>, preencha <strong>Nome do HU</strong>, <strong>Lotação</strong> e <strong>Ano da escala</strong>. O ano vale para todos os meses.</li>
-          <li>Em <strong>Regimes existentes na unidade</strong>, marque Disponibilidade Alcançável (DA) e Sobreaviso (SA) somente se a unidade tiver esses regimes. Desmarcado, o regime não aparece no lançamento, nos totais nem no quadro.</li>
+          <li>Na aba <button class="lnk aj-l" data-ir="servidores">Administração</button>, preencha <strong>Nome do HU</strong>, <strong>Nome da escala aberta</strong> (lotação ou posto) e <strong>Ano da escala</strong>. O ano vale para todos os meses.</li>
+          <li>Em <strong>Regimes existentes nesta escala</strong>, marque Disponibilidade Alcançável (DA) e Sobreaviso (SA) somente se a unidade tiver esses regimes. Desmarcado, o regime não aparece no lançamento, nos totais nem no quadro.</li>
           <li>Inclua os empregados em <strong>Adicionar empregado</strong> ou em <strong>Colar lista do Excel</strong>. Na lista colada, use uma linha por empregado, nesta ordem: Nome, Matrícula SIAPE, Cargo, Registro Conselho, Vínculo, CH semanal e Especialidade.</li>
           <li>Escolha o cargo na lista ou digite um cargo que não esteja nela (ex.: cargos de RJU ou auxiliar de enfermagem) e, se houver, informe a especialidade. A CH semanal vai de 1h a 40h, conforme a tabela de carga horária do MentorH. Com os regimes marcados, informe em <strong>CH conv. em DA</strong> quantas horas semanais da CH contratual foram convertidas em Disponibilidade Alcançável (até 50%; cada 1h vira 3h de DA) e indique se o empregado está no regime de SA (informativo).</li>
         </ol>
         <p>A matrícula SIAPE é necessária para o arquivo para o MentorH. A CH semanal define a CH Contratual do mês. Sem uma delas, o nome do empregado aparece na escala com o triângulo âmbar de cadastro incompleto. Para ver todos os dados de cadastro na grade, use o botão <strong>Cadastro</strong>, na barra da escala.</p>
+
+        <h4 class="aj-h3" id="varias-escalas" tabindex="-1">Várias escalas na unidade</h4>
+        <p>Uma unidade pode ter mais de uma escala (por exemplo, Enfermagem e Médicos, ou um posto por equipe). O nome do HU, os feriados e o cadastro de empregados são os mesmos para todas; cada escala tem nome, regimes DA/SA, empregados, lançamentos e observações próprios.</p>
+        <ol>
+          <li>Na aba Escala, ao lado do mês, escolha a escala aberta na lista. O número entre parênteses é a quantidade de empregados dela.</li>
+          <li>No botão <strong>⋯</strong> ao lado da lista: <strong>Nova escala</strong>, <strong>Renomear</strong>, <strong>Duplicar</strong> (mesmos empregados e regimes, sem lançamentos), <strong>Escolher os empregados</strong> e <strong>Excluir</strong>.</li>
+          <li>Na aba Administração, marque em <strong>Nesta escala</strong> quem entra na escala aberta. Abaixo do nome aparece em que outras escalas o empregado está. Empregado novo já entra na escala aberta.</li>
+        </ol>
+        <p>O mesmo empregado pode estar em duas escalas. Se as jornadas dele se sobrepuserem no mesmo horário, inclusive em plantão que vira o dia, o sistema aponta a inconsistência <strong>horários sobrepostos</strong> nas duas escalas. Excluir um empregado do cadastro apaga os lançamentos dele em todas as escalas; para só tirá-lo de uma escala, desmarque <strong>Nesta escala</strong>.</p>
 
         <h4 class="aj-h3" id="feriados" tabindex="-1">Conferir feriados</h4>
         <ol>
@@ -826,17 +842,20 @@ body.consulta #v-servidores input,body.consulta #v-servidores select,body.consul
           </div>
         </div>
         <p>Antes de gerar o arquivo, o sistema mostra o que foi deixado de fora e por quê.</p>
+        <p>Com mais de uma escala, <strong>Exportar › Arquivo para o MentorH — todas as escalas</strong> gera um único arquivo do mês com as linhas de todas elas.</p>
 
         <h4 class="aj-h3" id="excel" tabindex="-1">Exportar planilha e imprimir</h4>
         <ul>
           <li><strong>Exportar › Planilha Excel com fórmulas — só este mês (.xlsx)</strong> gera a planilha do mês exibido na tela.</li>
           <li><strong>Exportar › Planilha Excel com fórmulas — ano inteiro (.xlsx)</strong> gera a planilha com os 12 meses.</li>
+          <li>Com mais de uma escala, <strong>Exportar › Planilhas Excel — todas as escalas</strong> gera um arquivo .zip com uma planilha do ano para cada escala.</li>
         </ul>
         <p>A planilha leva os empregados, os feriados e os lançamentos, com os mesmos cálculos de horas do sistema. A coluna CH Conversão DA e a lista de inconsistências ficam só no sistema. As fórmulas e a aba Códigos ficam protegidas. A versão da planilha (com ou sem DA e SA) segue os regimes marcados na aba Administração. Use o Chrome ou o Edge atualizados.</p>
         <p>O botão <strong>Imprimir</strong> imprime a escala do mês em A4 paisagem, com totais, legenda e observações. Pela seta ao lado de <strong>Imprimir</strong>, é possível incluir os quadros de frequência e de ocorrências em página própria.</p>
 
         <h4 class="aj-h3" id="backup" tabindex="-1">Backup dos dados</h4>
-        <p>Use o botão <strong>Backup</strong>, no canto superior direito, para salvar ou restaurar o arquivo de backup. A data do último backup aparece ao lado do botão. Salve um backup ao terminar cada sessão de trabalho e guarde o arquivo em local seguro. Restaurar um backup substitui todos os dados atuais deste navegador.</p>
+        <p>Use o botão <strong>Backup</strong>, no canto superior direito, para salvar ou restaurar o arquivo de backup. A data do último backup aparece ao lado do botão. Salve um backup ao terminar cada sessão de trabalho e guarde o arquivo em local seguro. O backup leva todas as escalas da unidade.</p>
+        <p>Ao restaurar, o sistema pergunta: <strong>Substituir tudo</strong> troca os dados deste navegador pelos do backup; <strong>Acrescentar</strong> inclui as escalas do backup como escalas novas, sem duplicar empregados com a mesma matrícula, e soma os feriados que faltarem. Use Acrescentar para juntar escalas feitas em computadores diferentes.</p>
 
         <p class="aj-topo"><a href="#aj-topo">Voltar ao início da página</a></p>
       </section>
@@ -925,6 +944,16 @@ body.consulta #v-servidores input,body.consulta #v-servidores select,body.consul
   <button class="op" id="b-exp" role="menuitem">Arquivo para o MentorH (.txt)</button>
   <button class="op" id="b-xlsx-mes" role="menuitem">Planilha Excel com fórmulas — só este mês (.xlsx)</button>
   <button class="op" id="b-xlsx" role="menuitem">Planilha Excel com fórmulas — ano inteiro (.xlsx)</button>
+  <div class="sep" id="exp-todas-sep" role="separator"></div>
+  <button class="op" id="b-exp-todas" role="menuitem">Arquivo para o MentorH — todas as escalas (.txt)</button>
+  <button class="op" id="b-xlsx-todas" role="menuitem">Planilhas Excel — todas as escalas, ano inteiro (.zip)</button>
+</div>
+<div class="menu" id="menu-esc" role="menu">
+  <button class="op" id="esc-nova" role="menuitem">Nova escala</button>
+  <button class="op" id="esc-ren" role="menuitem">Renomear esta escala</button>
+  <button class="op" id="esc-dup" role="menuitem">Duplicar esta escala (mesmos empregados, sem lançamentos)</button>
+  <button class="op" id="esc-memb" role="menuitem">Escolher os empregados desta escala</button>
+  <button class="op" id="esc-del" role="menuitem">Excluir esta escala</button>
 </div>
 <div class="menu" id="menu-serv" role="menu">
   <button class="op" data-a="up" role="menuitem">Subir</button>
@@ -963,6 +992,19 @@ body.consulta #v-servidores input,body.consulta #v-servidores select,body.consul
   <p class="dica">Copie as colunas do Excel nesta ordem e cole abaixo: Nome, Matrícula SIAPE, Cargo, Registro Conselho, Vínculo, CH semanal (1 a 40) e, se quiser, Especialidade. Uma linha por empregado. Cargos fora da lista HU Brasil são mantidos como digitados.</p>
   <textarea class="campo" id="colar-txt" style="width:100%;height:180px;font-family:Consolas,monospace;font-size:12px" aria-label="Lista de empregados" placeholder="Nome&#9;Matrícula&#9;Cargo&#9;Registro&#9;Vínculo&#9;CH"></textarea>
   <div class="rod"><button class="btn" data-fecha>Cancelar</button><button class="btn pri" id="colar-ok">Adicionar</button></div>
+</div></div>
+<div class="modal" id="m-nome" role="dialog" aria-modal="true" aria-labelledby="m-nome-t"><div class="cx estreita" style="width:min(460px,100%)">
+  <div class="tit"><h2 id="m-nome-t">Nova escala</h2><button class="btn ico" data-fecha aria-label="Fechar" data-ico="fechar"></button></div>
+  <label class="rot" for="nome-esc">Nome da escala (equipe ou posto de serviço)</label>
+  <input class="campo" id="nome-esc" style="width:100%" maxlength="80" autocomplete="off" placeholder="Ex.: UTI Adulto – Enfermagem" data-foco>
+  <p class="dica" id="m-nome-d"></p>
+  <div class="rod"><button class="btn" data-fecha>Cancelar</button><button class="btn pri" id="nome-ok">Salvar</button></div>
+</div></div>
+<div class="modal" id="m-rest" role="dialog" aria-modal="true" aria-labelledby="m-rest-t"><div class="cx estreita" style="width:min(520px,100%)">
+  <div class="tit"><h2 id="m-rest-t">Restaurar backup</h2><button class="btn ico" data-fecha aria-label="Fechar" data-ico="fechar"></button></div>
+  <p id="m-rest-x"></p>
+  <ul class="dica" style="margin:8px 0 0 18px"><li><b>Substituir tudo</b>: os dados deste navegador são trocados pelos do backup.</li><li><b>Acrescentar</b>: as escalas do backup entram como escalas novas; empregados com a mesma matrícula não são duplicados e os feriados que faltam são incluídos.</li></ul>
+  <div class="rod"><button class="btn" data-fecha>Cancelar</button><button class="btn" id="rest-add">Acrescentar</button><button class="btn pri" id="rest-sub">Substituir tudo</button></div>
 </div></div>
 <div class="modal" id="m-colar-fer" role="dialog" aria-modal="true" aria-labelledby="m-colar-fer-t"><div class="cx">
   <div class="tit"><h2 id="m-colar-fer-t">Colar feriados</h2><button class="btn ico" data-fecha aria-label="Fechar" data-ico="fechar"></button></div>
@@ -1365,23 +1407,43 @@ if (typeof module !== 'undefined') module.exports = Core;
 
   /* ---------- estado e armazenamento ---------- */
   let armazenaOk = true;
+  /* várias escalas por unidade: cadastro, feriados e nome do HU são da unidade; lançamentos, nome (lotação/posto),
+     regimes DA/SA, observações e membros são de cada escala. S.escala, S.lotacao, S.temDA, S.temSA e S.obsMes apontam
+     para a escala aberta (S.escAtual). */
+  const novaEscala = (nome, o) => Object.assign({ id: 'e' + Math.random().toString(36).slice(2, 10), nome: nome || '', temDA: true, temSA: true, membros: [], escala: {}, obsMes: {} }, o || {});
+  const CAMPO_ESC = { escala: 'escala', lotacao: 'nome', temDA: 'temDA', temSA: 'temSA', obsMes: 'obsMes' };
+  const escAberta = st => (st || S).escalas.find(x => x.id === (st || S).escAtual) || (st || S).escalas[0];
+  function ligaEscala(st) {
+    Object.keys(CAMPO_ESC).forEach(k => { delete st[k]; Object.defineProperty(st, k, { configurable: true, enumerable: false, get: () => escAberta(st)[CAMPO_ESC[k]], set: v => { escAberta(st)[CAMPO_ESC[k]] = v; } }); });
+    return st;
+  }
   function novoEstado() {
-    return { v: 1, hu: '', lotacao: '', ano: 2027, mes: 1, servidores: [], feriados: C.feriadosNacionais(2027), escala: {}, codigos: {},
-      cadCols: false, compacto: false, painel: null, totais: false, pq: false, qFreq: true, qOcor: false, qJE: false, qOcultas: [], obsMes: {}, modoConsulta: false, temDA: true, temSA: true, logoHU: null, ultimoBackup: null, ultimoBackupTs: null };
+    const e1 = novaEscala('');
+    return { v: 1, hu: '', ano: 2027, mes: 1, servidores: [], feriados: C.feriadosNacionais(2027), escalas: [e1], escAtual: e1.id, codigos: {},
+      cadCols: false, compacto: false, painel: null, totais: false, pq: false, qFreq: true, qOcor: false, qJE: false, qOcultas: [], modoConsulta: false, logoHU: null, ultimoBackup: null, ultimoBackupTs: null };
   }
   function normaliza(o) {
+    o = Object.assign({}, o);
+    if (!Array.isArray(o.escalas)) {   // backup ou dados de antes das várias escalas: viram a primeira escala
+      o.escalas = [novaEscala(o.lotacao || '', { temDA: o.temDA !== undefined ? !!o.temDA : true, temSA: o.temSA !== undefined ? !!o.temSA : true, membros: (o.servidores || []).map(x => x.id), escala: o.escala || {}, obsMes: o.obsMes || {} })];
+      o.escAtual = o.escalas[0].id;
+    }
+    ['escala', 'lotacao', 'temDA', 'temSA', 'obsMes'].forEach(k => delete o[k]);
     const s = Object.assign(novoEstado(), o);
+    if (!s.escalas.length) s.escalas = [novaEscala('')];
+    s.escalas.forEach(e => { e.membros = Array.isArray(e.membros) ? e.membros : []; e.escala = e.escala || {}; e.obsMes = e.obsMes || {}; e.temDA = e.temDA !== false; e.temSA = e.temSA !== false; if (!e.id) e.id = novaEscala().id; });
+    if (!s.escalas.some(e => e.id === s.escAtual)) s.escAtual = s.escalas[0].id;
+    ligaEscala(s);
     if (!Array.isArray(s.qOcultas)) s.qOcultas = [];
-    if (!s.obsMes || typeof s.obsMes !== 'object') s.obsMes = {};
     (s.servidores || []).forEach(x => { x.cargo = casaCargo(x.cargo); delete x.intervalo; if (x.especialidade === undefined) x.especialidade = ''; x.sa = !!x.sa; x.da = !!x.da; if (x.daConv === undefined) x.daConv = ''; x.daConv = x.daConv === '' ? '' : +x.daConv || ''; if (x.daConv) x.da = true; });
-    Object.values(s.escala || {}).forEach(em => Object.values(em || {}).forEach(dias => Object.values(dias || {}).forEach(c => { if (c && c.r) c.r = c.r.replace(/-(DISF|DISPF|DisF|DisPF)$/, '-DISP'); })));
+    s.escalas.forEach(E => Object.values(E.escala || {}).forEach(em => Object.values(em || {}).forEach(dias => Object.values(dias || {}).forEach(c => { if (c && c.r) c.r = c.r.replace(/-(DISF|DISPF|DisF|DisPF)$/, '-DISP'); }))));
     if (!s.ultimoBackupTs && s.ultimoBackup) { const m = /^(\d\d)\/(\d\d)\/(\d{4}) (\d\d):(\d\d)/.exec(s.ultimoBackup); if (m) s.ultimoBackupTs = new Date(+m[3], +m[2] - 1, +m[1], +m[4], +m[5]).getTime(); }
     return s;
   }
   function carregar() {
     try { const t = localStorage.getItem(CHAVE); if (t) { const o = JSON.parse(t); if (o && o.v === 1) return normaliza(o); } }
     catch (e) { armazenaOk = false; }
-    return novoEstado();
+    return ligaEscala(novoEstado());
   }
   let S = carregar(), tSalvar = null;
   S.codigos = {};   // códigos do MentorH são fixos (somente consulta)
@@ -1414,7 +1476,7 @@ if (typeof module !== 'undefined') module.exports = Core;
     menuAberto = null; menuBtn = null;
   }
   function abreMenu(m, btn) {
-    fechaMenu(); if (m.id === 'menu-exp') rotXlsxMes(); if (m.id === 'menu-bkp') infoBackup(); m.classList.add('on');
+    fechaMenu(); if (m.id === 'menu-exp') { rotXlsxMes(); const v = S.escalas.length > 1; $('exp-todas-sep').hidden = $('b-exp-todas').hidden = $('b-xlsx-todas').hidden = !v; } if (m.id === 'menu-bkp') infoBackup(); m.classList.add('on');
     const r = btn.getBoundingClientRect();
     m.style.top = Math.min(r.bottom + 4, window.innerHeight - m.offsetHeight - 8) + 'px';
     m.style.left = Math.max(8, Math.min(r.left, window.innerWidth - m.offsetWidth - 8)) + 'px';
@@ -1512,7 +1574,7 @@ if (typeof module !== 'undefined') module.exports = Core;
   const TOT = [['mat', 'Matutinos no dia'], ['vesp', 'Vespertinos no dia'], ['diu', 'Plantão Diurno'], ['not', 'Plantão Noturno'], ['aus', 'Ausentes (afast./férias)'], ['trab', 'Total trabalhando hoje'], ['da', 'Empregados em DA'], ['sa', 'Empregados em SA']];
 
   function servidoresDoMes() {
-    return S.servidores;
+    const m = new Set(escAberta().membros); return S.servidores.filter(s => m.has(s.id));
   }
   function corFundo(c) {
     const k = C.corCelula(c); if (!k) return '';
@@ -1549,7 +1611,8 @@ if (typeof module !== 'undefined') module.exports = Core;
     const a = S.ano, m = S.mes, pa = m === 1 ? a - 1 : a, pm = m === 1 ? 12 : m - 1;
     const ant = (S.escala[pa + '-' + C.pad(pm)] || {})[s.id] || {};
     const r = C.inconsistencias(s.nome, ant, cel, a, m, C.mapaFeriados(S.feriados), s, (y, mm) => (S.escala[y + '-' + C.pad(mm)] || {})[s.id] || {});
-    return { seq: r.seq, sa: r.saDias, disp: r.dispDias, da: new Set(r.daDias || []), fe: new Set(r.feDias || []), itens: r.itens, txt: r.itens.map(x => x.txt) };
+    const cf = conflitos(s, a, m), itens = r.itens.concat(cf.out);
+    return { seq: r.seq, sa: r.saDias, disp: r.dispDias, da: new Set(r.daDias || []), fe: new Set(r.feDias || []), cf: new Set(cf.dias), itens, txt: itens.map(x => x.txt) };
   }
   let incLista = [];
   function infoDias() {
@@ -1589,7 +1652,9 @@ if (typeof module !== 'undefined') module.exports = Core;
     const B = document.body.classList;
     B.toggle('pq', !!S.pq); B.toggle('cadcols', !!S.cadCols); B.toggle('compacto', !!S.compacto); B.toggle('painel-on', !!S.painel); B.toggle('totais', !!S.totais);
     $('b-painel').setAttribute('aria-pressed', S.painel ? 'true' : 'false');
-    $('tb-lot').innerHTML = S.lotacao ? 'Lotação: <b>' + h(S.lotacao) + '</b>' : '<button class="lnk" data-ir="servidores">Informar a lotação</button>';
+    if (!$('sel-esc')) $('tb-lot').innerHTML = '<label class="sr" for="sel-esc">Escala aberta</label><select class="campo" id="sel-esc" title="Escala aberta (equipe ou posto de serviço)"></select><button class="btn ico" id="b-esc-menu" data-menu="menu-esc" aria-haspopup="true" aria-expanded="false" aria-label="Opções das escalas" title="Nova escala, renomear, duplicar ou excluir">' + ico('mais3') + '</button>';
+    $('sel-esc').innerHTML = S.escalas.map((e, i) => '<option value="' + e.id + '"' + (e.id === S.escAtual ? ' selected' : '') + '>' + h(e.nome || 'Escala ' + (i + 1)) + ' (' + e.membros.length + ')</option>').join('');
+    $('sel-esc').title = 'Escala aberta: ' + nomeEsc(escAberta()) + ' — ' + escAberta().membros.length + ' empregado(s)';
     $('p-hu').textContent = S.hu ? ' — ' + S.hu.toUpperCase() : ''; $('p-lot').textContent = (S.lotacao || '').toUpperCase(); $('p-lot-w').hidden = !S.lotacao; $('p-mes').textContent = C.MESES[S.mes - 1].toUpperCase(); $('p-ano').textContent = S.ano;
     const a = S.ano, m = S.mes, e = escMes(), { info, F, n } = infoDias();
     visiveis = servidoresDoMes(); incLista = [];
@@ -1609,7 +1674,7 @@ if (typeof module !== 'undefined') module.exports = Core;
       t += '<tr><th class="fixo nome" scope="row" data-s="' + si + '" title="' + h(dica) + '"><span class="nm"><span>' + (h(s.nome) || '(sem nome)') + '<small class="mat"> · ' + (h(s.matricula) || 'sem matrícula') + '</small></span>' + (pen.length ? '<span class="wn" role="img" tabindex="0" data-tip="' + h(pen.join('\n')) + '" aria-label="Cadastro incompleto: ' + h(pen.join('. ')) + '">' + ico('warn') + '</span>' : '') + (al.txt.length ? '<span class="ic-al" role="img" tabindex="0" data-tip="' + h(al.txt.join('\n')) + '" aria-label="Inconsistência: ' + h(al.txt.join(' ')) + '"></span>' : '') + '</span><span class="sub">' + h(sub) + tags + (s.cargo ? ' · ' + h(s.cargo) : '') + '</span>' + (s.especialidade ? '<span class="sub esp">' + h(s.especialidade) + '</span>' : '') + '</th>'
         + '<td class="cad">' + h(s.matricula) + '</td><td class="cad" title="' + h(s.cargo) + '">' + h(s.cargo) + '</td><td class="cad">' + h(s.registro) + '</td><td class="cad">' + h(s.vinculo) + '</td><td class="cad">' + h(s.ch) + '</td><td class="cad" title="' + h(s.especialidade) + '">' + h(s.especialidade) + '</td>';
       info.forEach(i => {
-        const c = cel[i.d], tt = [al.seq.has(i.d) && '7º dia seguido de trabalho ou mais (DSR após o 6º dia)', al.sa.has(i.d) && 'Semana com mais de ' + C.LIMITE_SA + 'h de sobreaviso', al.disp.has(i.d) && 'Dispensa sem jornada ou fora de feriado/ponto facultativo', al.da.has(i.d) && 'DA em dia com jornada regular', al.fe && al.fe.has(i.d) && 'Parcela de férias com problema (veja Inconsistências)'].filter(Boolean);
+        const c = cel[i.d], tt = [al.seq.has(i.d) && '7º dia seguido de trabalho ou mais (DSR após o 6º dia)', al.sa.has(i.d) && 'Semana com mais de ' + C.LIMITE_SA + 'h de sobreaviso', al.disp.has(i.d) && 'Dispensa sem jornada ou fora de feriado/ponto facultativo', al.da.has(i.d) && 'DA em dia com jornada regular', al.fe && al.fe.has(i.d) && 'Parcela de férias com problema (veja Inconsistências)', al.cf && al.cf.has(i.d) && 'Horário sobreposto com outra escala (veja Inconsistências)'].filter(Boolean);
         if (c && c.obs) tt.push('Observação: ' + c.obs);
         t += '<td class="c ' + i.cls + (tt.length > (c && c.obs ? 1 : 0) ? ' al' : '') + (c && c.obs ? ' ob' : '') + '" data-s="' + si + '" data-d="' + i.d + '" style="' + corFundo(c) + '"' + (tt.length ? ' title="' + h(tt.join('\n')) + '"' : '') + '>' + htmlCel(c) + '</td>';
       });
@@ -1817,6 +1882,55 @@ if (typeof module !== 'undefined') module.exports = Core;
     v.addEventListener('mousedown', trava, true); v.addEventListener('focusin', trava, true); v.addEventListener('click', trava, true); v.addEventListener('keydown', trava, true);
   });
   ['obs-cel', 'obs-mes'].forEach(id => $(id).addEventListener('focusin', e => { if (S.modoConsulta) { e.target.blur(); podeAlterar(); } }, true));
+
+
+  /* ---------- várias escalas: trocar, criar, renomear, duplicar, excluir ---------- */
+  const nomeEsc = e => e.nome || 'Escala ' + (S.escalas.indexOf(e) + 1);
+  function trocaEscala(id) {
+    if (!S.escalas.some(e => e.id === id)) return;
+    fechaDigita(false); S.escAtual = id; desfazer = []; refazer = []; sel = null; area = null;
+    salvar(); aplicaRegime(); desenhaEstado(); desenhaEscala(); if (document.body.dataset.v === 'servidores') desenhaServ();
+  }
+  document.addEventListener('change', e => { if (e.target.id === 'sel-esc') { trocaEscala(e.target.value); toast('Escala aberta: ' + nomeEsc(escAberta()) + '.', 'info'); } });
+  let nomeAcao = null;
+  function pedeNome(titulo, valor, dica, fn) { $('m-nome-t').textContent = titulo; $('nome-esc').value = valor || ''; $('m-nome-d').textContent = dica || ''; nomeAcao = fn; abreModal('m-nome'); $('nome-esc').select(); }
+  $('nome-ok').onclick = () => { const v = $('nome-esc').value.trim(); if (!v) { $('nome-esc').focus(); toast('Informe o nome da escala.', 'aviso'); return; } const fn = nomeAcao; nomeAcao = null; fechaModal(); if (fn) fn(v); };
+  $('nome-esc').addEventListener('keydown', e => { e.stopPropagation(); if (e.key === 'Enter') { e.preventDefault(); $('nome-ok').click(); } });
+  $('esc-nova').onclick = () => { fechaMenu(); if (!podeAlterar()) return; pedeNome('Nova escala', '', 'Depois, marque em Administração quem entra nela. Os feriados e o cadastro são os mesmos da unidade.', v => { const e = novaEscala(v); S.escalas.push(e); trocaEscala(e.id); vai('servidores'); toast('Escala "' + v + '" criada. Marque os empregados em "Nesta escala".', 'ok'); }); };
+  $('esc-ren').onclick = () => { fechaMenu(); if (!podeAlterar()) return; const E = escAberta(); pedeNome('Renomear escala', E.nome, '', v => { E.nome = v; salvar(); desenhaEstado(); desenhaEscala(); toast('Escala renomeada.', 'ok'); }); };
+  $('esc-dup').onclick = () => { fechaMenu(); if (!podeAlterar()) return; const E = escAberta(); pedeNome('Duplicar escala', 'Cópia de ' + nomeEsc(E), 'A cópia leva os mesmos empregados e regimes, sem os lançamentos.', v => { const e = novaEscala(v, { temDA: E.temDA, temSA: E.temSA, membros: E.membros.slice() }); S.escalas.splice(S.escalas.indexOf(E) + 1, 0, e); trocaEscala(e.id); toast('Escala "' + v + '" criada.', 'ok'); }); };
+  $('esc-memb').onclick = () => { fechaMenu(); vai('servidores'); toast('Marque em "Nesta escala" quem entra em ' + nomeEsc(escAberta()) + '.', 'info'); };
+  $('esc-del').onclick = () => {
+    fechaMenu(); if (!podeAlterar()) return;
+    if (S.escalas.length < 2) { toast('A unidade precisa ter ao menos uma escala.', 'aviso'); return; }
+    const E = escAberta(), nl = Object.values(E.escala).reduce((a, m) => a + Object.values(m).reduce((b, c) => b + Object.keys(c).length, 0), 0);
+    confirma('Excluir escala', 'Excluir a escala "' + nomeEsc(E) + '"?' + (nl ? '\n\nOs ' + nl + ' lançamento(s) dela serão apagados.' : '') + ' Os empregados continuam no cadastro da unidade.', 'Excluir', true).then(ok => {
+      if (!ok) return; const i = S.escalas.indexOf(E); S.escalas.splice(i, 1); trocaEscala(S.escalas[Math.max(0, i - 1)].id); toast('Escala excluída.', 'ok');
+    });
+  };
+
+  /* conflito de horário: o mesmo empregado com jornadas sobrepostas em duas escalas */
+  function conflitos(s, a, m) {
+    const out = [], dias = []; if (S.escalas.length < 2) return { out, dias };
+    const atual = escAberta(), n = C.diasNoMes(a, m);
+    const cel = (E, d) => { const t = new Date(a, m - 1, d), kk = t.getFullYear() + '-' + C.pad(t.getMonth() + 1); return ((E.escala[kk] || {})[s.id] || {})[t.getDate()]; };
+    const iv = c => { if (!c || !c.r) return null; const b = C.partes(c.r).base, j = C.J[b]; if (!j || C.ehFolga(b) || !j.ini || !j.fim) return null; const mi = t => { const [x, y] = t.split(':').map(Number); return x * 60 + y; }; let i = mi(j.ini), f = mi(j.fim); if (f <= i) f += 1440; return { i, f, b, j }; };
+    S.escalas.forEach(E => {
+      if (E.id === atual.id || !E.membros.includes(s.id)) return;
+      for (let d = 1; d <= n; d++) {
+        const A = iv(cel(atual, d)); if (!A) continue;
+        for (const off of [0, -1, 1]) {
+          const B = iv(cel(E, d + off)); if (!B) continue;
+          if (A.i < B.f + off * 1440 && B.i + off * 1440 < A.f) {
+            const dB = new Date(a, m - 1, d + off).getDate();
+            dias.push(d); out.push({ tipo: 'conflito', dias: [d], txt: (s.nome || '(sem nome)') + ' tem horários sobrepostos no dia ' + d + ': ' + A.b + ' (' + A.j.ini + '–' + A.j.fim + ') nesta escala e ' + B.b + ' (' + B.j.ini + '–' + B.j.fim + ')' + (off ? ', do dia ' + dB + ',' : '') + ' na escala "' + nomeEsc(E) + '".' });
+            break;
+          }
+        }
+      }
+    });
+    return { out, dias };
+  }
 
   /* ---------- painel de lançamento ---------- */
   let aba = 'jornada', grupoAberto = null;
@@ -2133,7 +2247,7 @@ if (typeof module !== 'undefined') module.exports = Core;
     else { const oc = [[], [], [], [], [], [], []]; for (let d = 1; d <= n1; d++) oc[C.dow(a, m, d)].push(d); for (let d = 1; d <= n2; d++) { const L = oc[C.dow(p.a, p.m, d)]; mapa[d] = L[Math.min(Math.floor((d - 1) / 7), L.length - 1)]; } }
     guardaDesfazer(k2);
     const dst = S.escala[k2] = S.escala[k2] || {}; let n = 0;
-    S.servidores.forEach(s => {
+    servidoresDoMes().forEach(s => {
       const o = src[s.id]; if (!o) return; const novo = {};
       for (let d = 1; d <= n2; d++) { const c = o[mapa[d]]; if (!c) continue; const b = C.partes(c.r).base, r = C.J[b] ? b : '', x = comX && c.x && regOk(C.X[c.x].t.toLowerCase()) ? c.x : ''; if (r || x) { novo[d] = { r, x }; n++; } }
       if (Object.keys(novo).length) dst[s.id] = novo;
@@ -2154,13 +2268,28 @@ if (typeof module !== 'undefined') module.exports = Core;
 
   /* ---------- exportação MentorH ---------- */
   let expAtual = null;
-  $('b-exp').onclick = () => {
-    fechaDigita(false); fechaMenu();
-    const servs = servidoresDoMes(), esc = escMes(), r = C.exportarMentorh(servs, esc, S.ano, S.mes, S.codigos), av = r.avisos; expAtual = r;
-    const semMat = servs.filter(s => !String(s.matricula || '').trim()).map(s => ({ nome: s.nome || '(sem nome)', n: C.exportarMentorh([Object.assign({}, s, { matricula: '0' })], esc, S.ano, S.mes, S.codigos).linhas.length })).filter(x => x.n);
+  let expTodas = false;
+  function mentorhEscala() {
+    const servs = servidoresDoMes(), esc = escMes(), r = C.exportarMentorh(servs, esc, S.ano, S.mes, S.codigos);
+    r.semMat = servs.filter(s => !String(s.matricula || '').trim()).map(s => ({ nome: s.nome || '(sem nome)', n: C.exportarMentorh([Object.assign({}, s, { matricula: '0' })], esc, S.ano, S.mes, S.codigos).linhas.length })).filter(x => x.n);
+    return r;
+  }
+  function mentorhTodas() {
+    const orig = S.escAtual, linhas = [], semMat = [], avisos = { dsr: 0, afast: 0, extraIgnorado: 0, semCodigo: {} };
+    try { S.escalas.forEach(E => { S.escAtual = E.id; const r = mentorhEscala(); r.linhas.forEach(l => linhas.push(l)); r.semMat.forEach(x => semMat.push(x)); avisos.dsr += r.avisos.dsr || 0; avisos.afast += r.avisos.afast || 0; avisos.extraIgnorado += r.avisos.extraIgnorado || 0; Object.keys(r.avisos.semCodigo || {}).forEach(k => avisos.semCodigo[k] = (avisos.semCodigo[k] || 0) + r.avisos.semCodigo[k]); }); }
+    finally { S.escAtual = orig; }
+    const texto = ['Matrícula Servidor\tCódigo do Horário\tData Início\tData Fim'].concat(linhas.map(l => l.join('\t'))).join('\r\n') + '\r\n';
+    return { texto, linhas, avisos, semMat };
+  }
+  $('b-exp').onclick = () => abreExp(false);
+  $('b-exp-todas').onclick = () => abreExp(true);
+  function abreExp(todas) {
+    fechaDigita(false); fechaMenu(); expTodas = todas;
+    const r = todas ? mentorhTodas() : mentorhEscala(), av = r.avisos; expAtual = r;
+    const semMat = r.semMat;
     const nSemMat = semMat.reduce((a, x) => a + x.n, 0), sc = Object.keys(av.semCodigo), nSemCod = sc.reduce((a, k) => a + av.semCodigo[k], 0);
     const fora = av.dsr + av.afast, prob = nSemMat + nSemCod;
-    $('m-exp-t').textContent = 'Arquivo para o MentorH — ' + C.MESES[S.mes - 1] + ' de ' + S.ano;
+    $('m-exp-t').textContent = 'Arquivo para o MentorH — ' + C.MESES[S.mes - 1] + ' de ' + S.ano + (todas ? ' — todas as escalas' : S.escalas.length > 1 ? ' — ' + nomeEsc(escAberta()) : '');
     let t = '<div class="nums"><div><b>' + r.linhas.length + '</b><span>linha(s) no arquivo</span></div><div><b>' + fora + '</b><span>dia(s) fora por regra</span></div><div class="' + (prob ? 'p' : '') + '"><b>' + prob + '</b><span>dia(s) com problema</span></div></div>';
     if (nSemMat) t += '<div class="aviso al">' + ico('warn') + '<span><b>Sem matrícula SIAPE (' + nSemMat + ' dia(s) não exportados):</b> ' + h(semMat.map(x => x.nome).join(', ')) + '. <button class="lnk" data-fecha data-ir="servidores">Corrigir em Administração</button></span></div>';
     if (nSemCod) t += '<div class="aviso al">' + ico('warn') + '<span><b>Sem código de horário no MentorH (não exportados):</b> ' + sc.map(s => h(s) + ' (' + av.semCodigo[s] + ' dia(s))').join(', ') + '. <button class="lnk" data-fecha data-ir="codigos">Ver em Códigos</button></span></div>';
@@ -2174,10 +2303,10 @@ if (typeof module !== 'undefined') module.exports = Core;
     } else t += '<div class="aviso in">' + ico('info') + '<span>Não há nada para exportar neste mês.</span></div>';
     $('e-res').innerHTML = t; $('e-baixar').disabled = !r.linhas.length;
     abreModal('m-exp');
-  };
+  }
   $('e-baixar').onclick = () => {
     if (!expAtual) return;
-    const nome = 'escala_mentorh_' + S.ano + '-' + C.pad(S.mes) + (S.lotacao ? '_' + slug(S.lotacao) : '') + '.txt';
+    const nome = 'escala_mentorh_' + S.ano + '-' + C.pad(S.mes) + (expTodas ? '_todas_as_escalas' : S.lotacao ? '_' + slug(S.lotacao) : '') + '.txt';
     if ($('e-enc').value === 'ansi') {
       const t = expAtual.texto, b = new Uint8Array(t.length);
       for (let i = 0; i < t.length; i++) { const c = t.charCodeAt(i); b[i] = c < 256 ? c : 63; }
@@ -2233,7 +2362,7 @@ if (typeof module !== 'undefined') module.exports = Core;
     const nomes = Object.keys(V), bin = await Promise.all(nomes.map(n => inflar(b64u8(V[n])))), F = {};
     nomes.forEach((n, i) => F[n] = bin[i]);
     const dec = new TextDecoder(), enc = new TextEncoder(), txt = n => dec.decode(F[n]), poe = (n, s) => { F[n] = enc.encode(s); };
-    const servs = S.servidores.slice(0, MAXS), fers = S.feriados.filter(f => f.data && f.data.slice(0, 4) === String(a)).sort((x, y) => x.data.localeCompare(y.data));
+    const servs = servidoresDoMes().slice(0, MAXS), fers = S.feriados.filter(f => f.data && f.data.slice(0, 4) === String(a)).sort((x, y) => x.data.localeCompare(y.data));
     // Administração
     const ad = { B3: S.hu || '', B4: S.lotacao || '', B5: +a };
     servs.forEach((s, i) => { const r = 10 + i; [s.nome, numOuTxt(s.matricula), s.cargo, s.especialidade, s.registro, s.vinculo, numOuTxt(s.ch)].concat(S.temDA ? [s.da ? 'Sim' : 'Não'] : [], S.temSA ? [s.sa ? 'Sim' : 'Não'] : []).forEach((v, c) => ad[letra(c) + r] = v === undefined ? '' : v); });
@@ -2281,11 +2410,11 @@ if (typeof module !== 'undefined') module.exports = Core;
       poe('docProps/app.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"><Application>Microsoft Excel</Application><DocSecurity>0</DocSecurity><ScaleCrop>false</ScaleCrop><AppVersion>12.0000</AppVersion></Properties>');
     }
     const ordem = Object.keys(F).sort((p, q) => (p === '[Content_Types].xml' ? -1 : q === '[Content_Types].xml' ? 1 : 0));
-    return { partes: await zipar(ordem.map(n => [n, F[n]])), cortados: S.servidores.length - servs.length, fCortados: Math.max(0, fers.length - MAXF) };
+    return { partes: await zipar(ordem.map(n => [n, F[n]])), cortados: servidoresDoMes().length - servs.length, fCortados: Math.max(0, fers.length - MAXF) };
   }
   async function exportaXlsx(soMes) {
     fechaDigita(false); fechaMenu();
-    if (!S.servidores.length) { toast('Cadastre os empregados antes de exportar.', 'aviso'); return; }
+    if (!servidoresDoMes().length) { toast('Esta escala não tem empregados. Escolha os empregados em Administração.', 'aviso'); return; }
     if (typeof CompressionStream === 'undefined' || typeof DecompressionStream === 'undefined') { toast('Este navegador não consegue gerar a planilha. Use o Chrome ou o Edge atualizados.', 'erro'); return; }
     const nome = 'Escala_Mensal_' + S.ano + (soMes ? '-' + C.pad(soMes) : '') + (S.lotacao ? '_' + slug(S.lotacao) : '') + '.xlsx';
     toast('Gerando a planilha' + (soMes ? ' de ' + C.MESES[soMes - 1] : ' de ' + S.ano) + '…', 'info');
@@ -2299,6 +2428,24 @@ if (typeof module !== 'undefined') module.exports = Core;
     } catch (err) { console.error(err); toast('Não foi possível gerar a planilha: ' + err.message, 'erro'); }
   }
   $('b-xlsx').onclick = () => exportaXlsx(0);
+  $('b-xlsx-todas').onclick = async () => {
+    fechaDigita(false); fechaMenu();
+    if (typeof CompressionStream === 'undefined' || typeof DecompressionStream === 'undefined') { toast('Este navegador não consegue gerar a planilha. Use o Chrome ou o Edge atualizados.', 'erro'); return; }
+    const orig = S.escAtual, arqs = [], usados = new Set(); let pul = 0;
+    toast('Gerando as planilhas de ' + S.escalas.length + ' escala(s)…', 'info');
+    try {
+      for (const E of S.escalas) {
+        S.escAtual = E.id; if (!servidoresDoMes().length) { pul++; continue; }
+        const r = await gerarXlsxAno(0), tam = r.partes.reduce((t, p) => t + p.length, 0), u = new Uint8Array(tam); let o = 0; r.partes.forEach(p => { u.set(p, o); o += p.length; });
+        let nm = 'Escala_Mensal_' + S.ano + '_' + (slug(nomeEsc(E)) || 'escala'); while (usados.has(nm)) nm += '_2'; usados.add(nm); arqs.push([nm + '.xlsx', u]);
+      }
+    } catch (err) { console.error(err); toast('Não foi possível gerar as planilhas: ' + err.message, 'erro'); return; }
+    finally { S.escAtual = orig; }
+    if (!arqs.length) { toast('Nenhuma escala tem empregados para exportar.', 'aviso'); return; }
+    const nome = 'Escalas_' + S.ano + (S.hu ? '_' + slug(S.hu) : '') + '.zip';
+    baixar(nome, await zipar(arqs), 'application/zip');
+    toast(arqs.length + ' planilha(s) geradas em ' + nome + (pul ? '. ' + pul + ' escala(s) sem empregados ficaram de fora.' : '.'), 'ok');
+  };
   $('b-xlsx-mes').onclick = () => exportaXlsx(S.mes);
   const rotXlsxMes = () => { $('b-xlsx-mes').textContent = 'Planilha Excel com fórmulas — só ' + C.MESES[S.mes - 1] + ' (.xlsx)'; };
 
@@ -2306,17 +2453,19 @@ if (typeof module !== 'undefined') module.exports = Core;
   function avisoServ(s) { const p = pendencias(s); return p.length ? ' <span class="wn" role="img" aria-label="' + h(p.join('. ')) + '" title="' + h(p.join('\n')) + '">' + ico('warn') + '</span>' : ''; }
   function desenhaServ() {
     $('f-hu').value = S.hu; $('f-lot').value = S.lotacao; $('f-ano').value = S.ano; $('f-da').checked = !!S.temDA; $('f-sa').checked = !!S.temSA; desenhaLogo();
-    let t = '<thead><tr><th scope="col">Nº</th><th scope="col" style="min-width:200px">Nome completo</th><th scope="col" style="width:100px">Matrícula SIAPE</th><th scope="col" style="width:190px">Cargo</th><th scope="col" style="width:130px">Especialidade</th><th scope="col" style="width:115px">Registro Conselho</th><th scope="col" style="width:105px">Vínculo</th><th scope="col" style="width:78px">CH semanal</th>' + (S.temDA ? '<th scope="col" style="width:96px" title="Horas semanais da CH contratual convertidas em Disponibilidade Alcançável (até 50%; cada 1h vira 3h de DA)">CH conv. em DA (h/sem)</th>' : '') + (S.temSA ? '<th scope="col" style="width:80px" title="Indica se o empregado está no regime de Sobreaviso (informativo)">Sobreaviso (SA)</th>' : '') + '<th scope="col"><span style="position:absolute;left:-999em">Ações</span></th></tr></thead><tbody>';
+    const cadDA = S.escalas.some(e => e.temDA), cadSA = S.escalas.some(e => e.temSA), mem = new Set(escAberta().membros), nomeE = e => e.nome || 'Escala ' + (S.escalas.indexOf(e) + 1);
+    let t = '<thead><tr><th scope="col">Nº</th><th scope="col" style="width:78px" title="Marque quem entra na escala aberta (' + h(nomeE(escAberta())) + ')">Nesta escala</th><th scope="col" style="min-width:200px">Nome completo</th><th scope="col" style="width:100px">Matrícula SIAPE</th><th scope="col" style="width:190px">Cargo</th><th scope="col" style="width:130px">Especialidade</th><th scope="col" style="width:115px">Registro Conselho</th><th scope="col" style="width:105px">Vínculo</th><th scope="col" style="width:78px">CH semanal</th>' + (cadDA ? '<th scope="col" style="width:96px" title="Horas semanais da CH contratual convertidas em Disponibilidade Alcançável (até 50%; cada 1h vira 3h de DA)">CH conv. em DA (h/sem)</th>' : '') + (cadSA ? '<th scope="col" style="width:80px" title="Indica se o empregado está no regime de Sobreaviso (informativo)">Sobreaviso (SA)</th>' : '') + '<th scope="col"><span style="position:absolute;left:-999em">Ações</span></th></tr></thead><tbody>';
     S.servidores.forEach((s, i) => {
       const n = 'do empregado ' + (i + 1);
-      t += '<tr data-i="' + i + '"><td class="n">' + (i + 1) + avisoServ(s) + '</td><td><input data-c="nome" aria-label="Nome ' + n + '" value="' + h(s.nome) + '"></td><td><input data-c="matricula" inputmode="numeric" aria-label="Matrícula SIAPE ' + n + '" class="' + (String(s.matricula || '').trim() ? '' : 'falta') + '" value="' + h(s.matricula) + '"></td><td><input data-c="cargo" list="lista-cargos" aria-label="Cargo ' + n + '" placeholder="Escolha ou digite" value="' + h(s.cargo) + '"></td><td><input data-c="especialidade" aria-label="Especialidade ' + n + '" placeholder="Ex.: UTI, Cardiologia" value="' + h(s.especialidade) + '"></td><td><input data-c="registro" aria-label="Registro no conselho ' + n + '" value="' + h(s.registro) + '"></td>'
+      const outras = S.escalas.filter(e => e.id !== S.escAtual && e.membros.includes(s.id)).map(nomeE);
+      t += '<tr data-i="' + i + '"><td class="n">' + (i + 1) + avisoServ(s) + '</td><td class="mb"><input type="checkbox" data-c="membro" aria-label="Incluir ' + n + ' na escala aberta"' + (mem.has(s.id) ? ' checked' : '') + '></td><td><input data-c="nome" aria-label="Nome ' + n + '" value="' + h(s.nome) + '">' + (outras.length ? '<span class="esc-outras">Também em: ' + h(outras.join(', ')) + '</span>' : '') + '</td><td><input data-c="matricula" inputmode="numeric" aria-label="Matrícula SIAPE ' + n + '" class="' + (String(s.matricula || '').trim() ? '' : 'falta') + '" value="' + h(s.matricula) + '"></td><td><input data-c="cargo" list="lista-cargos" aria-label="Cargo ' + n + '" placeholder="Escolha ou digite" value="' + h(s.cargo) + '"></td><td><input data-c="especialidade" aria-label="Especialidade ' + n + '" placeholder="Ex.: UTI, Cardiologia" value="' + h(s.especialidade) + '"></td><td><input data-c="registro" aria-label="Registro no conselho ' + n + '" value="' + h(s.registro) + '"></td>'
         + '<td><select data-c="vinculo" aria-label="Vínculo ' + n + '">' + [''].concat(VINC).map(v => '<option' + (v === (s.vinculo || '') ? ' selected' : '') + '>' + v + '</option>').join('') + '</select></td>'
         + '<td><select data-c="ch" aria-label="CH semanal ' + n + '" class="' + (C.CH_TAB[s.ch] ? '' : 'falta') + '">' + [''].concat(CHS).map(v => '<option' + (String(v) === String(s.ch || '') ? ' selected' : '') + '>' + v + '</option>').join('') + '</select></td>'
-        + (S.temDA ? '<td><select data-c="daConv" aria-label="CH semanal convertida em Disponibilidade Alcançável ' + n + '" class="' + (s.da && !s.daConv ? 'falta' : '') + '" title="' + (s.daConv ? s.daConv + 'h convertidas = ' + (s.daConv * 3) + 'h de DA por semana; ' + ((+s.ch || 0) - s.daConv) + 'h presenciais' : 'Fora do regime de DA') + '">' + [''].concat(Array.from({ length: Math.floor((+s.ch || 0) / 2) }, (_, k) => k + 1), s.daConv > (+s.ch || 0) / 2 ? [s.daConv] : []).map(v => '<option value="' + v + '"' + (String(v) === String(s.daConv || '') ? ' selected' : '') + '>' + (v === '' ? 'Não' : v + 'h') + '</option>').join('') + '</select></td>' : '')
-        + (S.temSA ? '<td><select data-c="sa" aria-label="Regime de Sobreaviso ' + n + '"><option value=""' + (s.sa ? '' : ' selected') + '>Não</option><option value="1"' + (s.sa ? ' selected' : '') + '>Sim</option></select></td>' : '')
+        + (cadDA ? '<td><select data-c="daConv" aria-label="CH semanal convertida em Disponibilidade Alcançável ' + n + '" class="' + (s.da && !s.daConv ? 'falta' : '') + '" title="' + (s.daConv ? s.daConv + 'h convertidas = ' + (s.daConv * 3) + 'h de DA por semana; ' + ((+s.ch || 0) - s.daConv) + 'h presenciais' : 'Fora do regime de DA') + '">' + [''].concat(Array.from({ length: Math.floor((+s.ch || 0) / 2) }, (_, k) => k + 1), s.daConv > (+s.ch || 0) / 2 ? [s.daConv] : []).map(v => '<option value="' + v + '"' + (String(v) === String(s.daConv || '') ? ' selected' : '') + '>' + (v === '' ? 'Não' : v + 'h') + '</option>').join('') + '</select></td>' : '')
+        + (cadSA ? '<td><select data-c="sa" aria-label="Regime de Sobreaviso ' + n + '"><option value=""' + (s.sa ? '' : ' selected') + '>Não</option><option value="1"' + (s.sa ? ' selected' : '') + '>Sim</option></select></td>' : '')
         + '<td class="ac"><button class="btn ico" data-menu="menu-serv" aria-haspopup="true" aria-expanded="false" aria-label="Ações ' + n + '">' + ico('mais3') + '</button></td></tr>';
     });
-    if (!S.servidores.length) t += '<tr><td class="ro" colspan="' + (9 + (S.temDA ? 1 : 0) + (S.temSA ? 1 : 0)) + '">Nenhum empregado cadastrado. Use "Adicionar empregado" ou "Colar lista do Excel".</td></tr>';
+    if (!S.servidores.length) t += '<tr><td class="ro" colspan="' + (10 + (cadDA ? 1 : 0) + (cadSA ? 1 : 0)) + '">Nenhum empregado cadastrado. Use "Adicionar empregado" ou "Colar lista do Excel".</td></tr>';
     $('t-serv').innerHTML = t + '</tbody>';
   }
   $('f-hu').oninput = e => { S.hu = e.target.value; salvar(); };
@@ -2345,6 +2494,7 @@ if (typeof module !== 'undefined') module.exports = Core;
     else if (c === 'sa') s.sa = !!e.target.value;
     else if (c === 'daConv') { s.daConv = e.target.value ? +e.target.value : ''; s.da = !!s.daConv; desenhaServ(); }
     else if (c === 'matricula') { s.matricula = e.target.value.replace(/\D/g, ''); e.target.value = s.matricula; }
+    else if (c === 'membro') { const E = escAberta(); E.membros = E.membros.filter(x => x !== s.id); if (e.target.checked) E.membros.push(s.id); salvar(); desenhaEstado(); return; }
     else if (c === 'cargo') { s.cargo = casaCargo(e.target.value); e.target.value = s.cargo; }
     else s[c] = e.target.value.trim();
     if (c === 'matricula') e.target.classList.toggle('falta', !s.matricula);
@@ -2359,15 +2509,15 @@ if (typeof module !== 'undefined') module.exports = Core;
     if (a === 'up' && i > 0) { [L[i - 1], L[i]] = [L[i], L[i - 1]]; salvar(); foco(i - 1); }
     else if (a === 'dn' && i < L.length - 1) { [L[i + 1], L[i]] = [L[i], L[i + 1]]; salvar(); foco(i + 1); }
     else if (a === 'del') {
-      const tem = Object.values(S.escala).some(m => m[L[i].id]);
-      confirma('Excluir empregado', 'Excluir ' + (L[i].nome || 'este empregado') + '?' + (tem ? '\n\nOs lançamentos dele em todos os meses também serão apagados.' : ''), 'Excluir', true).then(ok => {
+      const tem = S.escalas.some(E => Object.values(E.escala).some(m => m[L[i].id]));
+      confirma('Excluir empregado', 'Excluir ' + (L[i].nome || 'este empregado') + ' do cadastro da unidade?' + (tem ? '\n\nOs lançamentos dele em todos os meses e em todas as escalas também serão apagados.' : '') + '\n\nPara só tirá-lo desta escala, desmarque "Nesta escala".', 'Excluir', true).then(ok => {
         if (!ok) return;
-        Object.values(S.escala).forEach(m => { delete m[L[i].id]; }); L.splice(i, 1); salvar(); desenhaServ(); toast('Empregado excluído.', 'ok');
+        const id = L[i].id; S.escalas.forEach(E => { Object.values(E.escala).forEach(m => { delete m[id]; }); E.membros = E.membros.filter(x => x !== id); }); L.splice(i, 1); salvar(); desenhaServ(); toast('Empregado excluído.', 'ok');
       });
     }
   });
   const novoServ = o => Object.assign({ id: uid(), nome: '', matricula: '', cargo: '', registro: '', vinculo: 'HU Brasil', ch: '', especialidade: '', da: false, sa: false }, o);
-  $('b-add-serv').onclick = () => { S.servidores.push(novoServ()); salvar(); desenhaServ(); const i = document.querySelectorAll('#t-serv input[data-c=nome]'); i[i.length - 1].focus(); };
+  $('b-add-serv').onclick = () => { const ns = novoServ(); S.servidores.push(ns); escAberta().membros.push(ns.id); salvar(); desenhaServ(); const i = document.querySelectorAll('#t-serv input[data-c=nome]'); i[i.length - 1].focus(); };
   $('b-colar-serv').onclick = () => { $('colar-txt').value = ''; abreModal('m-colar'); $('colar-txt').focus(); };
   $('colar-ok').onclick = () => {
     let n = 0;
@@ -2375,7 +2525,7 @@ if (typeof module !== 'undefined') module.exports = Core;
       if (!l.trim()) return; const p = l.split('\t').map(x => x.trim());
       if (/^nome/i.test(p[0]) && /matr/i.test(p[1] || '')) return;
       const v = VINC.find(x => x.toUpperCase() === (p[4] || '').toUpperCase()) || 'HU Brasil', ch = parseInt(p[5], 10);
-      S.servidores.push(novoServ({ nome: p[0], matricula: (p[1] || '').replace(/\D/g, ''), cargo: casaCargo(p[2]), registro: p[3] || '', vinculo: v, ch: CHS.includes(ch) ? ch : '', especialidade: p[6] || '' })); n++;
+      const ns = novoServ({ nome: p[0], matricula: (p[1] || '').replace(/\D/g, ''), cargo: casaCargo(p[2]), registro: p[3] || '', vinculo: v, ch: CHS.includes(ch) ? ch : '', especialidade: p[6] || '' }); S.servidores.push(ns); escAberta().membros.push(ns.id); n++;
     });
     fechaModal(); salvar(); desenhaServ(); desenhaEstado();
     toast(n ? n + ' empregado(s) adicionados.' : 'Nenhuma linha reconhecida na lista colada.', n ? 'ok' : 'aviso');
@@ -2498,8 +2648,8 @@ if (typeof module !== 'undefined') module.exports = Core;
 
   /* ---------- AJUDA ---------- */
   function infoBackup() {
-    const nl = Object.values(S.escala).reduce((a, m) => a + Object.values(m).reduce((b, c) => b + Object.keys(c).length, 0), 0);
-    $('bkp-info').textContent = S.servidores.length + ' empregado(s) e ' + nl + ' lançamento(s) gravados neste navegador.' + (S.ultimoBackup ? ' Último backup salvo em ' + S.ultimoBackup + '.' : '');
+    const nl = S.escalas.reduce((t, E) => t + Object.values(E.escala).reduce((a, m) => a + Object.values(m).reduce((b, c) => b + Object.keys(c).length, 0), 0), 0);
+    $('bkp-info').textContent = S.escalas.length + ' escala(s), ' + S.servidores.length + ' empregado(s) e ' + nl + ' lançamento(s) gravados neste navegador.' + (S.ultimoBackup ? ' Último backup salvo em ' + S.ultimoBackup + '.' : '');
   }
   const ajIdx = () => document.querySelectorAll('.aj-idx a');
   function marcaIdx() {
@@ -2518,16 +2668,38 @@ if (typeof module !== 'undefined') module.exports = Core;
     marcaIdx();
   });
   $('b-rest').onclick = () => { fechaMenu(); $('f-rest').click(); };
+  let bkpPendente = null;
+  function aposRestaurar(msg) { desfazer = []; refazer = []; desenhaLogo(); sel = null; salvar(); aplicaRegime(); desenhaEstado(); infoBackup(); vai(document.body.dataset.v || 'escala'); toast(msg, 'ok'); }
+  $('rest-sub').onclick = () => { if (!bkpPendente) return; const painelAtual = S.painel; S = bkpPendente; bkpPendente = null; if (S.painel === null) S.painel = painelAtual; fechaModal(); aposRestaurar('Backup restaurado.'); };
+  $('rest-add').onclick = () => {
+    const B = bkpPendente; if (!B) return; bkpPendente = null; fechaModal();
+    const mapa = {}, ids = new Set(S.servidores.map(x => x.id)); let novosEmp = 0;
+    B.servidores.forEach(x => {
+      const mat = String(x.matricula || '').trim(), igual = mat ? S.servidores.find(y => String(y.matricula || '').trim() === mat) : S.servidores.find(y => y.nome && y.nome === x.nome);
+      if (igual) { mapa[x.id] = igual.id; return; }
+      const nx = Object.assign({}, x); if (ids.has(nx.id)) nx.id = uid(); ids.add(nx.id); mapa[x.id] = nx.id; S.servidores.push(nx); novosEmp++;
+    });
+    const nomes = new Set(S.escalas.map(e => e.nome)); let prim = null;
+    B.escalas.forEach((E, i) => {
+      let nome = E.nome || 'Escala ' + (i + 1); while (nomes.has(nome)) nome += ' (2)'; nomes.add(nome);
+      const esc = {}; Object.keys(E.escala).forEach(k => { esc[k] = {}; Object.keys(E.escala[k]).forEach(sid => { if (mapa[sid]) esc[k][mapa[sid]] = E.escala[k][sid]; }); });
+      const e = novaEscala(nome, { temDA: E.temDA, temSA: E.temSA, membros: E.membros.map(x => mapa[x]).filter(Boolean), escala: esc, obsMes: E.obsMes || {} });
+      S.escalas.push(e); if (!prim) prim = e.id;
+    });
+    let nf = 0; (B.feriados || []).forEach(f => { if (f.data && !S.feriados.some(x => x.data === f.data)) { S.feriados.push(f); nf++; } });
+    S.feriados.sort((a, b) => (a.data || '9').localeCompare(b.data || '9'));
+    if (prim) S.escAtual = prim;
+    aposRestaurar(B.escalas.length + ' escala(s) acrescentada(s)' + (novosEmp ? ', ' + novosEmp + ' empregado(s) novo(s) no cadastro' : '') + (nf ? ' e ' + nf + ' feriado(s)' : '') + '.');
+  };
   $('f-rest').onchange = e => {
     const f = e.target.files[0]; if (!f) return; const r = new FileReader();
     r.onload = () => {
       let o;
-      try { o = JSON.parse(r.result); if (!o || o.v !== 1 || !Array.isArray(o.servidores) || typeof o.escala !== 'object') throw 0; }
+      try { o = JSON.parse(r.result); if (!o || o.v !== 1 || !Array.isArray(o.servidores) || (typeof o.escala !== 'object' && !Array.isArray(o.escalas))) throw 0; }
       catch (x) { toast('Este arquivo não é um backup válido da escala.', 'erro'); return; }
-      confirma('Restaurar backup', 'O backup substitui todos os dados atuais deste navegador.', 'Restaurar', false).then(ok => {
-        if (!ok) return;
-        const painelAtual = S.painel; S = normaliza(o); if (S.painel === null) S.painel = painelAtual; desfazer = []; refazer = []; desenhaLogo(); sel = null; salvar(); desenhaEstado(); infoBackup(); vai(document.body.dataset.v || 'escala'); toast('Backup restaurado.', 'ok');
-      });
+      bkpPendente = normaliza(o); const ne = bkpPendente.escalas.length;
+      $('m-rest-x').textContent = 'O backup tem ' + ne + ' escala(s) (' + bkpPendente.escalas.map((e, i) => e.nome || 'Escala ' + (i + 1)).join(', ') + ') e ' + bkpPendente.servidores.length + ' empregado(s). O que deseja fazer?';
+      abreModal('m-rest');
     };
     r.readAsText(f); e.target.value = '';
   };
